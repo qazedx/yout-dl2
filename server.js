@@ -4,7 +4,7 @@ var express = require('express'),
 app
   .use(express.static('./public'))
   .get('*', function (req, res) {
-    res.sendFile('public/main.html', {
+    res.sendFile('public/my_uploads.html', {
       "root": "."
     });
   }).listen(3000);

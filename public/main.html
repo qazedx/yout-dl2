@@ -2,25 +2,38 @@
 <html ng-app='youtApp'>
 
 <head>
-  <head>
-    <title>My Uploads</title>
-    <link rel="stylesheet" type="text/css" href="my_uploads.css">
-  </head>
-  <body>
-    <div id="login-container" class="pre-auth">
-      This application requires access to your YouTube account.
-      Please <a href="#" id="login-link">authorize</a> to continue.
+  <title> main </title>
+  <base href='/'>
+  <link rel='stylesheet' href='lib/bootstrap/dist/css/bootstrap.min.css' />
+  <link rel='stylesheet' href='/style.css' />
+</head>
+
+<body>
+  <div class='container'>
+    <div class="alert alert-danger hidden" id="error"></div>
+
+    <!-- live local -->
+    <div ng-controller="live-playlist" class='row'>
+      <div class='text-center' live-playlist></div>
+      <p>Live end</p>
     </div>
-    <div id="video-container"></div>
-    <div class="button-container">
-      <button id="prev-button" class="paging-button" onclick="previousPage();">Previous Page</button>
-      <button id="next-button" class="paging-button" onclick="nextPage();">Next Page</button>
+    <!-- END live -->
+
+    <div class='row' ng-controller="downloadVid">
+      <div class='col-sm-12' dl-field></div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script type="text/javascript" src="auth.js"></script>
-    <script type="text/javascript" src="my_uploads.js"></script>
-    <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
-    <!-- 
+
+    <!-- local -->
+    <div ng-controller="vidList" class='row'>
+      <!-- <div class='col-sm-12'><button class='form-control' type="button" name="button" ng-click="echoscope()">echo scope</button></br></div> -->
+      <div class='text-center' list></div>
+      <div add2list></div>
+    </div>
+    <!-- END local -->
+
+  </div>
+
+  <script src='lib/jquery/dist/jquery.min.js'></script>
   <script src='lib/bootstrap/dist/js/bootstrap.min.js'></script>
   <script src='lib/angular/angular.min.js'></script>
   <script src='lib/angular-route/angular-route.min.js'></script>
@@ -29,7 +42,7 @@
   <script src='src/app.js'></script>
   <script src='src/factories.js'></script>
   <script src='src/controllers.js'></script>
-  <script src='src/directives.js'></script> -->
+  <script src='src/directives.js'></script>
 </body>
 
 </html>
