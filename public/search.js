@@ -8,11 +8,14 @@ function search() {
   var q = $('#query').val();
   var request = gapi.client.youtube.search.list({
     q: q,
-    part: 'snippet'
+    part: 'snippet',
+    type:'channel'
   });
 
   request.execute(function(response) {
     var str = JSON.stringify(response.result);
-    $('#search-container').html('<pre>' + str + '</pre>');
+    var channelTitle = JSON.stringify(response.result.items[0].snippet.title);
+    $('#search-container2').html('<strong style="white-space: pre-wrap;">' + channelTitle + '</strong>');
+    $('#search-container').html('<pre style="white-space: pre-wrap;">' + str + '</pre>');
   });
 }
