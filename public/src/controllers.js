@@ -28,9 +28,13 @@ $scope.searchResults = {
       $('#search-container').html('<pre style="max-height:300px;">' + str + '</pre>');
       $('#search-container2').html('<i>' + channelTitle + '</i>');
       // $scope.searchResults(str);
-      //$scope.searchResults = response.result;
+      $scope.searchResults = response.result;
+      console.log($scope.searchResults.items + " $scope.searchResults");
     });
 
+  }
+  $scope.echosc = function (){
+    console.log($scope.searchResults);
   }
   // $scope.searchResults = function (resultsItems) {
   //   rez = JSON.parse(resultsItems)

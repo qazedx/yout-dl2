@@ -16,6 +16,7 @@ angular.module('youtApp')
       replace: false,
       link: function ($scope, element, attr) {
 console.log($scope.searchResults);
+
       }
     };
   })
