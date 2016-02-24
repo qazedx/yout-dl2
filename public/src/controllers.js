@@ -3,21 +3,21 @@ angular.module('youtApp', [])
   .controller('subscriptionsController', ['$rootScope', '$scope', subscriptionsController])
 
 function searchController($rootScope, $scope) {
-$scope.searchResults = {
-  "items":{
-    "1":"s",
-    "2":"s3",
-    "3":"s2"
+  $scope.searchResults = {
+    "items": {
+      "1": "s",
+      "2": "s3",
+      "3": "s2"
+    }
   }
-}
-  $scope.Search = function (search) {
+  $scope.Search = function () {
     // console.log($search.value);
 
     var request = gapi.client.youtube.search.list({
       q: $scope.search.value,
       part: 'snippet',
       maxResults: 10
-      // type:'channel'
+        // type:'channel'
     });
     console.log($scope.search);
     request.execute(function (response) {
@@ -28,17 +28,22 @@ $scope.searchResults = {
       // $scope.searchResults(str);
       $scope.searchResults = response.result;
       console.log($scope.searchResults.items + " $scope.searchResults");
-    });
 
+      $scope.echosc;
+    });
+    setTimeout(function () {
+      $scope.searchResults;
+    }, 2000);
   }
-  $scope.echosc = function (){
-    console.log($scope.searchResults);
-  }
-  // $scope.searchResults = function (resultsItems) {
-  //   rez = JSON.parse(resultsItems)
-  //   console.log("from controlet" + rez);
-  //   return rez;
-  // }
+
+  $scope.echosc = function () {
+      console.log($scope.searchResults);
+    }
+    // $scope.searchResults = function (resultsItems) {
+    //   rez = JSON.parse(resultsItems)
+    //   console.log("from controlet" + rez);
+    //   return rez;
+    // }
 }
 
 
