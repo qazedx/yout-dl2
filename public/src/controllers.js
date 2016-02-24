@@ -11,13 +11,13 @@ $scope.searchResults = {
   }
 }
   $scope.Search = function (search) {
-    // console.log(search);
-    var q = search.value;
+    // console.log($search.value);
+
     var request = gapi.client.youtube.search.list({
-      q: q,
+      q: $scope.search.value,
       part: 'snippet',
+      maxResults: 10
       // type:'channel'
-      maxResults: 3
     });
     console.log($scope.search);
     request.execute(function (response) {
@@ -25,8 +25,6 @@ $scope.searchResults = {
       var str = JSON.stringify(response.result);
       console.log(response.result);
       var channelTitle = JSON.stringify(response.result.items[0].snippet.title);
-      $('#search-container').html('<pre style="max-height:300px;">' + str + '</pre>');
-      $('#search-container2').html('<i>' + channelTitle + '</i>');
       // $scope.searchResults(str);
       $scope.searchResults = response.result;
       console.log($scope.searchResults.items + " $scope.searchResults");
@@ -59,8 +57,6 @@ function subscriptionsController($rootScope, $scope) {
     request.execute(function (response) {
       var str = JSON.stringify(response.result);
       var channelTitle = JSON.stringify(response.result.items[0].snippet.title);
-      $('#search-container2').html('<i>' + channelTitle + '</i>');
-      $('#search-container').html('<pre>' + str + '</pre>');
       console.log(response.result);
     });
   }

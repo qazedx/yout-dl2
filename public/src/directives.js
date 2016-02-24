@@ -39,8 +39,6 @@ console.log($scope.searchResults);
           request.execute(function (response) {
             var str = JSON.stringify(response.result);
             var channelTitle = JSON.stringify(response.result.items[0].snippet.title);
-            $('#search-container2').html('<i>' + channelTitle + '</i>');
-            $('#search-container').html('<pre>' + str + '</pre>');
             console.log(response.result);
           });
         }
