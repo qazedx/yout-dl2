@@ -1,16 +1,15 @@
 var express = require('express'),
   app = express();
-
+var port = 3000;
 app
   .use(express.static('./public'))
   .get('*', function (req, res) {
     res.sendFile('public/main.html', {
-      // res.sendFile('public/search.html', {
-      // res.sendFile('public/my_upl.html', {
       "root": "."
     });
-  }).listen(3000);
 
+  }).listen(port);
+  console.log("listening on "+port);
 // read files
 var fs = require('fs');
 var ytdl = require('ytdl-core');
