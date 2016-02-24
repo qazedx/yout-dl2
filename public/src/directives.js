@@ -1,13 +1,48 @@
 angular.module('youtApp')
-  .directive('dlField', function () {
+  .directive('search', function () {
     return {
       restrict: 'EA',
       templateUrl: 'views/search.html',
       replace: false,
       link: function ($scope, element, attr) {
-        $('#idl-input').on('click', function () {
-          this.setSelectionRange(0, this.value.length) // select input on click
-        });
+
+      }
+    };
+  })
+  .directive('searchlist', function () {
+    return {
+      restrict: 'EA',
+      templateUrl: 'views/searchlist.html',
+      replace: false,
+      link: function ($scope, element, attr) {
+console.log($scope.searchResults);
+      }
+    };
+  })
+  .directive('subscriptions', function () {
+    return {
+      restrict: 'EA',
+      templateUrl: 'views/subscriptions.html',
+      replace: false,
+      link: function ($scope, element, attr) {
+        function showSubscriptions2() {
+          var q = $('#query').val();
+          var request = gapi.client.youtube.subscriptions.list({
+            q: q,
+            part: 'snippet',
+            type: 'channel',
+            mine: true,
+            maxResults: 10
+          });
+
+          request.execute(function (response) {
+            var str = JSON.stringify(response.result);
+            var channelTitle = JSON.stringify(response.result.items[0].snippet.title);
+            $('#search-container2').html('<i>' + channelTitle + '</i>');
+            $('#search-container').html('<pre>' + str + '</pre>');
+            console.log(response.result);
+          });
+        }
       }
     };
   })
