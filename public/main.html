@@ -10,7 +10,19 @@
 
 <body>
   <div class='container'>
+    <div  style="height:200px">
+        <div id="login-container" class="pre-auth">
+          This application requires access to your YouTube account. Please <a href="#" id="login-link">authorize</a> to continue.
+        </div>
+        <div id="video-container" style="height:100px"></div>
+        <div class="button-container">
+          <button id="prev-button" class="paging-button" onclick="previousPage();">Previous Page</button>
+          <button id="next-button" class="paging-button" onclick="nextPage();">Next Page</button>
+        </div>
 
+        <div class="subscriptions-container" ></div>
+        <div class="subscriptions-container2"></div>
+    </div>
     <!-- subscriptions -->
     <div ng-controller="subscriptionsController">
       <div subscriptions></div>
