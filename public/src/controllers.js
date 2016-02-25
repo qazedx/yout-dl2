@@ -28,7 +28,7 @@ function searchController($rootScope, $scope) {
       // $scope.searchResults(str);
       $scope.searchResults = response.result;
       console.log($scope.searchResults.items + " $scope.searchResults");
-
+ 
       $scope.echosc;
     });
     setTimeout(function() {
@@ -48,6 +48,7 @@ function searchController($rootScope, $scope) {
 
 
 function subscriptionsController($rootScope, $scope) {
+  {
   // // Define some variables used to remember state.
   // var playlistId, nextPageToken, prevPageToken;
   //
@@ -103,6 +104,7 @@ function subscriptionsController($rootScope, $scope) {
   //     }
   //   });
   // }
+  }
   $scope.showSubscriptions = function(search) {
     //var q = $('#query').val();
     var request = gapi.client.youtube.subscriptions.list({
