@@ -2,7 +2,7 @@
 <html ng-app='youtApp'>
 
 <head>
-  <title> main </title>
+  <title> yout-dl2 </title>
   <base href='/'>
   <link rel='stylesheet' href='lib/bootstrap/dist/css/bootstrap.min.css' />
   <link rel='stylesheet' href='/style.css' />
@@ -10,6 +10,9 @@
 
 <body>
   <div class='container'>
+
+    <a class="btn  btn-primary" ng-click="doLogin()"  href="" role="button">Login </a>
+
     <div style="height:200px">
       <div id="login-container" class="pre-auth">
         This application requires access to your YouTube account. Please <a href="#" id="login-link">authorize</a> to continue.
@@ -39,11 +42,13 @@
 
   </div>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-  <script src="auth.js"></script>
+  // <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <!-- // <script src="auth.js"></script> -->
   <script type="text/javascript" src="my_uploads.js"></script>
   <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
-
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-cookies.min.js"></script>
+      <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+      <script src="bower_components/angular-google-gapi/dist/angular-google-gapi.min.js"></script>
 
   <script src='lib/bootstrap/dist/js/bootstrap.min.js'></script>
   <script src='lib/angular/angular.min.js'></script>
