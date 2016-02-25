@@ -28,7 +28,7 @@ function searchController($rootScope, $scope) {
       // $scope.searchResults(str);
       $scope.searchResults = response.result;
       console.log($scope.searchResults.items + " $scope.searchResults");
- 
+
       $scope.echosc;
     });
     setTimeout(function() {
@@ -116,6 +116,7 @@ function subscriptionsController($rootScope, $scope) {
     });
 
     request.execute(function(response) {
+      $scope.subscriptionsResult = response.result;
       var str = JSON.stringify(response.result);
       var channelTitle = JSON.stringify(response.result.items[0].snippet.title);
       console.log(response.result);
