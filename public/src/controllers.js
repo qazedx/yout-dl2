@@ -29,21 +29,9 @@ function searchController($rootScope, $scope) {
       $scope.searchResults = response.result;
       console.log($scope.searchResults.items + " $scope.searchResults");
 
-      $scope.echosc;
     });
-    setTimeout(function() {
-      $scope.searchResults;
-    }, 2000);
   }
 
-  $scope.echosc = function() {
-      console.log($scope.searchResults);
-    }
-    // $scope.searchResults = function (resultsItems) {
-    //   rez = JSON.parse(resultsItems)
-    //   console.log("from controlet" + rez);
-    //   return rez;
-    // }
 }
 
 

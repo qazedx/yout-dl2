@@ -15,7 +15,6 @@ angular.module('youtApp')
       templateUrl: 'views/searchlist.html',
       replace: false,
       link: function ($scope, element, attr) {
-console.log($scope.searchResults);
 
       }
     };
