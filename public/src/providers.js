@@ -1,18 +1,18 @@
 angular.module('youtApp', [])
   .provider('list', function listProvider() {
-      var mine = true;
-      var Provider = {};
-      // this.useTinfoilShielding = function (value) {
-      //   useTinfoilShielding = !!value;
-      // };
-      //
-      // this.$get = ["apiToken", function listProvider(apiToken) {
-      //
-      //   }
-      //   // let's assume that the UnicornLauncher constructor was also changed to
-      //   // accept and use the useTinfoilShielding argument
-      //   return new list(apiToken, useTinfoilShielding);
-      // }];
+    var mine = true;
+    var Provider = {};
+    // this.useTinfoilShielding = function (value) {
+    //   useTinfoilShielding = !!value;
+    // };
+    //
+    // this.$get = ["apiToken", function listProvider(apiToken) {
+    //
+    //   }
+    //   // let's assume that the UnicornLauncher constructor was also changed to
+    //   // accept and use the useTinfoilShielding argument
+    //   return new list(apiToken, useTinfoilShielding);
+    // }];
 
     function Query() {
       var request = gapi.client.youtube.search.list({
