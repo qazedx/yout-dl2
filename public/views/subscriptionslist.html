@@ -1,7 +1,16 @@
 <p>
-  subscriptions  list
+  subscriptions list
 </p>
-<div class="" ng-repeat="item in subscriptionsResult.items">
-{{item.snippet.title}}
-<!-- <img src="{{item.snippet.thumbnails.default.url}}" alt="{{}}" /> -->
+<div class="" >
+  <!-- {{item.snippet.title}} -->
+  <uib-accordion close-others="oneAtATime">
+    <uib-accordion-group  ng-repeat="item in subscriptionsResult.items">
+      <uib-accordion-heading>
+        {{item.snippet.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+      </uib-accordion-heading>
+      <div>{{item.snippet.description}}</div>
+    </uib-accordion-group>
+
+  </uib-accordion>
+  <!-- <img src="{{item.snippet.thumbnails.default.url}}" alt="{{}}" /> -->
 </div>

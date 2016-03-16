@@ -1,6 +1,6 @@
 angular.module('youtApp')
   .controller('searchController',  searchController)
-  .controller('subscriptionsController', ['$rootScope', '$scope', subscriptionsController])
+  .controller('subscriptionsController',  subscriptionsController)
 
 function searchController($rootScope, $scope, SearchFactory) {
   $scope.searchResults = {
@@ -45,7 +45,7 @@ function searchController($rootScope, $scope, SearchFactory) {
 
 
 function subscriptionsController($rootScope, $scope) {
-
+ $scope.oneAtATime = true;
   $scope.showSubscriptions = function (search) {
     //var q = $('#query').val();
     var request = gapi.client.youtube.subscriptions.list({

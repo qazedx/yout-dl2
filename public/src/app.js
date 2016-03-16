@@ -1,1 +1,1 @@
-angular.module('youtApp', [])
+angular.module('youtApp', ['ngAnimate', 'ui.bootstrap'])
