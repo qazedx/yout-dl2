@@ -1,8 +1,8 @@
-angular.module('youtApp', [])
-  .controller('searchController', ['$rootScope', '$scope', searchController])
+angular.module('youtApp')
+  .controller('searchController',  searchController)
   .controller('subscriptionsController', ['$rootScope', '$scope', subscriptionsController])
 
-function searchController($rootScope, $scope, list) {
+function searchController($rootScope, $scope, SearchFactory) {
   $scope.searchResults = {
     "items": {
       "1": "s",
@@ -10,7 +10,16 @@ function searchController($rootScope, $scope, list) {
       "3": "s2"
     }
   }
-  $scope.Search = function () {
+  $scope.Search = function (searchModel) {
+    console.log($scope.searchModel);
+    var q = $scope.searchModel;
+    SearchFactory(q, 'snippet');
+    $scope.searchResults=$rootScope.searchResults
+    console.log($scope.searchResults);
+    // SearchFactory.searchResult().then(function (data) {
+    //   console.log(data + " data");
+    //   //   $scope.Temp1 = data.Temp1;
+    // });
     // console.log($search.value);
 
     // var request = gapi.client.youtube.search.list({
@@ -29,7 +38,7 @@ function searchController($rootScope, $scope, list) {
     //   $scope.searchResults = response.result;
     //   console.log($scope.searchResults.items + " $scope.searchResults");
     // });
-    list.search();
+    // list.search();
   }
 
 }
