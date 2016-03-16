@@ -1,6 +1,6 @@
 angular.module('youtApp')
-  .controller('searchController',  searchController)
-  .controller('subscriptionsController',  subscriptionsController)
+  .controller('searchController', searchController)
+  .controller('subscriptionsController', subscriptionsController)
 
 function searchController($rootScope, $scope, SearchFactory) {
   $scope.searchResults = {
@@ -14,7 +14,7 @@ function searchController($rootScope, $scope, SearchFactory) {
     console.log($scope.searchModel);
     var q = $scope.searchModel;
     SearchFactory(q, 'snippet');
-    $scope.searchResults=$rootScope.searchResults
+    $scope.searchResults = $rootScope.searchResults
     console.log($scope.searchResults);
     // SearchFactory.searchResult().then(function (data) {
     //   console.log(data + " data");
@@ -45,12 +45,12 @@ function searchController($rootScope, $scope, SearchFactory) {
 
 
 function subscriptionsController($rootScope, $scope) {
- $scope.oneAtATime = true;
+  $scope.oneAtATime = true;
   $scope.showSubscriptions = function (search) {
     //var q = $('#query').val();
     var request = gapi.client.youtube.subscriptions.list({
       //  q: q,
-      part: 'snippet',
+      part: 'snippet,contentDetails',
       type: 'channel',
       mine: true,
       maxResults: 10
@@ -62,5 +62,21 @@ function subscriptionsController($rootScope, $scope) {
       var channelTitle = JSON.stringify(response.result.items[0].snippet.title);
       console.log(response.result);
     });
+    console.log($scope.subscriptionsResult.items.length + " $scope.subscriptionsResult.items.length");
+    for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+      console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId);
+
+      var request = gapi.client.youtube.channels.list({
+        id: $scope.subscriptionsResult.items[i].snippet.resourceId.channelId,
+        part: 'snippet',
+        maxResults: 5
+      });
+      request.execute(function (response) {
+
+
+      console.log(response.result); ;
+
+      });
+    }
   }
 }
