@@ -16,17 +16,17 @@ app.run(['GAuth', 'GApi', 'GData', '$state', '$rootScope', '$window', '$cookies'
         var CLIENT = '1095932358118-6trmt0hgqbc9at3clre7582bqeprb2q1.apps.googleusercontent.com';
         var BASE;
         if($window.location.hostname == 'localhost') {
-            BASE = '//localhost:8080/_ah/api';
+            BASE = '//localhost:3000/_ah/api';
         } else {
             BASE = 'https://cloud-endpoints-gae.appspot.com/_ah/api';
         }
 
-        BASE = 'https://cloud-endpoints-gae.appspot.com/_ah/api';
+    //    BASE = 'https://cloud-endpoints-gae.appspot.com/_ah/api';
 
         GApi.load('myContactApi', 'v1', BASE);
         GApi.load('calendar', 'v3');
         GAuth.setClient(CLIENT);
-        GAuth.setScope('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/youtube');
+        GAuth.setScope('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar.readonly');
 
         var currentUser = $cookies.get('userId');
         if(currentUser) {
