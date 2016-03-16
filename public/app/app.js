@@ -1,4 +1,13 @@
-var app = angular.module('youtApp', ['angular-google-gapi',]);
+var app = angular.module('angular-google-api-example', [
+    'ngCookies',
+    'ui.router',
+    'angular-google-gapi',
+
+    'angular-google-api-example.router',
+    'angular-google-api-example.controller'
+
+]);
+
 app.run(['GAuth', 'GApi', 'GData', '$state', '$rootScope', '$window', '$cookies',
     function(GAuth, GApi, GData, $state, $rootScope, $window, $cookies) {
 
@@ -17,7 +26,7 @@ app.run(['GAuth', 'GApi', 'GData', '$state', '$rootScope', '$window', '$cookies'
         GApi.load('myContactApi', 'v1', BASE);
         GApi.load('calendar', 'v3');
         GAuth.setClient(CLIENT);
-        GAuth.setScope('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar.readonly');
+        GAuth.setScope('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/youtube');
 
         var currentUser = $cookies.get('userId');
         if(currentUser) {

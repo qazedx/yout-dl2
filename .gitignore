@@ -20,3 +20,4 @@ tags
 /node_modules/
 /bower_components/
 /public/vid/
+/public/lib/*
