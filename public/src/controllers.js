@@ -44,39 +44,90 @@ function searchController($rootScope, $scope, SearchFactory) {
 }
 
 
-function subscriptionsController($rootScope, $scope) {
+function subscriptionsController($window, $rootScope, $scope, $http, googleService) {
   $scope.oneAtATime = true;
-  $scope.showSubscriptions = function (search) {
-    //var q = $('#query').val();
-    var request = gapi.client.youtube.subscriptions.list({
-      //  q: q,
-      part: 'snippet,contentDetails',
-      type: 'channel',
-      mine: true,
-      maxResults: 10
-    });
 
-    request.execute(function (response) {
-      $scope.subscriptionsResult = response.result;
-      var str = JSON.stringify(response.result);
-      var channelTitle = JSON.stringify(response.result.items[0].snippet.title);
-      console.log(response.result);
-    });
-    console.log($scope.subscriptionsResult.items.length + " $scope.subscriptionsResult.items.length");
-    for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
-      console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId);
+    $window.initGapi = function () {
+      $scope.$apply($scope.getChannel);
+    };
 
-      var request = gapi.client.youtube.channels.list({
-        id: $scope.subscriptionsResult.items[i].snippet.resourceId.channelId,
-        part: 'snippet',
-        maxResults: 5
+    $scope.showSubscriptions = function () {
+      googleService.googleApiClientReady().then(function (data) {
+        $scope.channel = data;
+        console.log($scope.channel);
+      }, function (error) {
+        console.log('Failed: ' + error)
       });
-      request.execute(function (response) {
+    };
+  $scope.showSubscriptions2 = function (search) {
 
 
-      console.log(response.result); ;
 
-      });
-    }
+
+
+
+
+
+
+
+    // //var q = $('#query').val();
+    // // $scope.subscriptionsResult = {};
+    // var request = gapi.client.youtube.subscriptions.list({
+    //   //  q: q,
+    //   part: 'snippet,contentDetails',
+    //   type: 'channel',
+    //   mine: true,
+    //   maxResults: 10
+    // });
+    //
+    // request.execute(function (response) {
+    //   $scope.subscriptionsResult = response.result;
+    //   var str = JSON.stringify(response.result);
+    //   var channelTitle = JSON.stringify(response.result.items[0].snippet.title);
+    //   console.log(response.result);
+    // });
+    // if ($scope.subscriptionsResult) {
+    //   console.log($scope.subscriptionsResult.items.length + " $scope.subscriptionsResult.items.length");
+    //   for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+    //     console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId);
+    //
+    //
+    //     var config = {
+    //       id: $scope.subscriptionsResult.items[i].snippet.resourceId.channelId,
+    //       part: 'snippet,contentDetails',
+    //       maxResults: 5
+    //     }
+    //
+    //
+    //
+    //     $http({
+    //         method: 'GET',
+    //         url: 'https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=UC5d4piMBQlBQRFpS9m_8UZQ'}).then(function successCallback(response) {
+    //         console.log(response.result);
+    //         console.log($scope.subscriptionsResult);
+    //       }, function errorCallback(response) {
+    //         console.log(response);
+    //       });
+    //
+    //
+    //
+    //       var request = gapi.client.youtube.channels.list({
+    //         id: $scope.subscriptionsResult.items[i].snippet.resourceId.channelId,
+    //         part: 'snippet,contentDetails',
+    //         maxResults: 5
+    //       });
+    //       var ttt;
+    //       var yyy = request.execute(function (response, $scope) {
+    //
+    //         //  console.log($scope.subscriptionsResult);
+    //         $scope.playlistTemp = response.result;
+    //         ttt = response.result;
+    //         console.log($scope.playlistTemp);
+    //         return response.result;
+    //       }); console.log(yyy);
+    //
+    //     }
+    //
+    //   }
   }
 }
