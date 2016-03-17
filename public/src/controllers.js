@@ -2,7 +2,7 @@ angular.module('youtApp')
   .controller('searchController', searchController)
   .controller('subscriptionsController', subscriptionsController)
 
-function searchController($rootScope, $scope, SearchFactory) {
+function searchController($rootScope, $scope, googleService) {
   $scope.searchResults = {
     "items": {
       "1": "s",
@@ -11,11 +11,29 @@ function searchController($rootScope, $scope, SearchFactory) {
     }
   }
   $scope.Search = function (searchModel) {
-    console.log($scope.searchModel);
     var q = $scope.searchModel;
-    SearchFactory(q, 'snippet');
-    $scope.searchResults = $rootScope.searchResults
-    console.log($scope.searchResults);
+
+    googleService.googleApiClientReady("search", q).then(function (data) {
+      $scope.searchResults = data;
+      console.log(data);
+    }, function (error) {
+      console.log('Failed: ' + error)
+    });
+    console.log("$scope.searchResults " + JSON.stringify($scope.searchResults));
+
+
+
+
+    // console.log($scope.searchModel);
+    // var q = $scope.searchModel;
+    // SearchFactory(q, 'snippet');
+    // $scope.searchResults = $rootScope.searchResults
+    // console.log($scope.searchResults);
+
+
+
+
+
     // SearchFactory.searchResult().then(function (data) {
     //   console.log(data + " data");
     //   //   $scope.Temp1 = data.Temp1;
@@ -43,33 +61,27 @@ function searchController($rootScope, $scope, SearchFactory) {
 
 }
 
-
-function subscriptionsController($window, $rootScope, $scope, $http, googleService) {
+function subscriptionsController($window, $rootScope, $scope, $http, $sce, googleService) {
   $scope.oneAtATime = true;
 
-    $window.initGapi = function () {
-      $scope.$apply($scope.getChannel);
-    };
+  $window.initGapi = function () {
+    $scope.$apply($scope.getChannel);
+  };
 
-    $scope.showSubscriptions = function () {
-      googleService.googleApiClientReady().then(function (data) {
-        $scope.channel = data;
-        console.log($scope.channel);
-      }, function (error) {
-        console.log('Failed: ' + error)
-      });
-    };
+  $scope.showSubscriptions = function () {
+    googleService.googleApiClientReady().then(function (data) {
+      $scope.channel = data;
+      console.log($scope.channel);
+    }, function (error) {
+      console.log('Failed: ' + error)
+    });
+  };
+
+
+
+
+
   $scope.showSubscriptions2 = function (search) {
-
-
-
-
-
-
-
-
-
-
     // //var q = $('#query').val();
     // // $scope.subscriptionsResult = {};
     // var request = gapi.client.youtube.subscriptions.list({
