@@ -6,10 +6,15 @@
   <uib-accordion close-others="oneAtATime">
     <uib-accordion-group ng-repeat="item in subscriptionsResult.items">
       <uib-accordion-heading>
-        {{item.snippet.title}}  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        {{item.snippet.title}} <i class="pull-right glyphicon"
+        ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
       </uib-accordion-heading>
       <div class="playlist">
-        <pre>{{subscriptionsResult[i].playlistItems}}</pre>
+
+        <div class="video" ng-repeat="videoItem in item.uploads.uploadItems.items">
+          {{videoItem.snippet.title}}
+          <img ng-src="{{videoItem.snippet.thumbnails.default.url}}" alt="" />
+        </div>
       </div>
       <div>{{item.snippet.description}}</div>
     </uib-accordion-group>

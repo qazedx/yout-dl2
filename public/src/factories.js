@@ -19,7 +19,7 @@ angular.module('youtApp')
             part: 'snippet,contentDetails',
             type: 'channel',
             mine: true,
-            maxResults: maxResults
+            maxResults: 10
           });
         }else if (type == "Paylists") {
         //  console.log(q);
@@ -40,7 +40,7 @@ angular.module('youtApp')
           var request = gapi.client.youtube.playlistItems.list({
             part: 'snippet,contentDetails',
             playlistId: q,
-            maxResults: maxResults
+            maxResults: 10
           });
         } else {
           console.log("unknown type");
