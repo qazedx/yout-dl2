@@ -31,26 +31,16 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   };
 
   $scope.showSubscriptions = function () {
-    // var test = {[
-    //   "1":{
-    //     "tt":1
-    //   },
-    //   "2":{
-    //     "tt":32
-    //   }
-    // ]};
-    // // test[1].tt = 5;
-    // console.log(test);
+
     googleService.googleApiClientReady("Subscriptions").then(function (data) {
         $scope.subscriptionsResult = data;
-        console.log($scope.subscriptionsResult);
         for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
-          console.log(i);
 
+// playlists
           googleService.googleApiClientReady(
             "Paylists",
             $scope.subscriptionsResult.items[i].snippet.resourceId.channelId
-          ).then(function (data, i) {
+          ).then(function (data) {
 
               for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
                 if ($scope.subscriptionsResult.items[i].playlists == null) {
@@ -59,20 +49,33 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
                 }
               }
 
-              var playlists = data;
-              console.log(playlists);
-              // $scope.subscriptionsResult.items[i].playlists = {};
-              console.log(i);
-              console.log($scope.subscriptionsResult.items[1]);
-              $scope.subscriptionsResult.items[0].playlists = playlists;
-              console.log($scope.subscriptionsResult.items);
+            },
+            function (error) {
+              console.log('Failed: ' + error)
+            });
+
+// uploads
+          googleService.googleApiClientReady(
+            "Channels",
+            $scope.subscriptionsResult.items[i].snippet.resourceId.channelId
+          ).then(function (data) {
+
+              console.log(data);
+
+              for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+                if ($scope.subscriptionsResult.items[i].uploads == null) {
+                  $scope.subscriptionsResult.items[i].uploads = data;
+                  return;
+                }
+              }
 
             },
             function (error) {
               console.log('Failed: ' + error)
             });
+
         }
-console.log($scope.subscriptionsResult.items);
+        console.log($scope.subscriptionsResult.items);
       },
       function (error) {
         console.log('Failed: ' + error)

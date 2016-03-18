@@ -8,7 +8,7 @@ angular.module('youtApp')
       gapi.client.setApiKey('AIzaSyDz-n5ZL3bbWXP0eHdUWOoPFCrRlbKxluk');
       gapi.client.load('youtube', 'v3', function () {
         if (type == "search") {
-          console.log(q);
+        //  console.log(q);
           var request = gapi.client.youtube.search.list({
             q: q,
             maxResults: maxResults,
@@ -22,10 +22,17 @@ angular.module('youtApp')
             maxResults: maxResults
           });
         }else if (type == "Paylists") {
-          console.log(q);
+        //  console.log(q);
           var request = gapi.client.youtube.playlists.list({
             part: 'snippet,contentDetails',
             channelId: q,
+            maxResults: 3
+          });
+        }else if (type == "Channels") {
+        //  console.log(q);
+          var request = gapi.client.youtube.channels.list({
+            part: 'contentDetails',
+            id: q,
             maxResults: 3
           });
         } else if (type == "PaylistItems") {
@@ -41,7 +48,7 @@ angular.module('youtApp')
         }
         request.execute(function (response) {
           deferred.resolve(response.result);
-          console.log(response.result);
+        //  console.log(response.result);
         });
       });
       return deferred.promise;
