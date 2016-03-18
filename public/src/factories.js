@@ -35,11 +35,11 @@ angular.module('youtApp')
             id: q,
             maxResults: 3
           });
-        } else if (type == "PaylistItems") {
+        } else if (type == "PlaylistItems") {
+          console.log(q);
           var request = gapi.client.youtube.playlistItems.list({
-            q: q,
-            part: 'snippet',
-            playlistId: 'PLila01eYiSBjOtR8oqXkY0i5c1QS6k2Mu',
+            part: 'snippet,contentDetails',
+            playlistId: q,
             maxResults: maxResults
           });
         } else {

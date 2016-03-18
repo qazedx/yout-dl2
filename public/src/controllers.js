@@ -36,7 +36,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         $scope.subscriptionsResult = data;
         for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
 
-// playlists
+          // playlists
           googleService.googleApiClientReady(
             "Paylists",
             $scope.subscriptionsResult.items[i].snippet.resourceId.channelId
@@ -54,13 +54,13 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
               console.log('Failed: ' + error)
             });
 
-// uploads
+          // uploads
           googleService.googleApiClientReady(
             "Channels",
             $scope.subscriptionsResult.items[i].snippet.resourceId.channelId
           ).then(function (data) {
 
-              console.log(data);
+              //  console.log(data);
 
               for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
                 if ($scope.subscriptionsResult.items[i].uploads == null) {
@@ -68,70 +68,55 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
                   return;
                 }
               }
-
             },
             function (error) {
               console.log('Failed: ' + error)
             });
 
+          // uploads END
+
         }
-        console.log($scope.subscriptionsResult.items);
+
       },
       function (error) {
         console.log('Failed: ' + error)
       });
 
   };
-
-
-
-
-
-  $scope.showSubscriptions2 = function (search) {
-    // //var q = $('#query').val();
-    // // $scope.subscriptionsResult = {};
-    // var request = gapi.client.youtube.subscriptions.list({
-    //   //  q: q,
-    //   part: 'snippet,contentDetails',
-    //   type: 'channel',
-    //   mine: true,
-    //   maxResults: 10
-    // });
-    //
-    // request.execute(function (response) {
-    //   $scope.subscriptionsResult = response.result;
-    //   var str = JSON.stringify(response.result);
-    //   var channelTitle = JSON.stringify(response.result.items[0].snippet.title);
-    //   console.log(response.result);
-    // });
-    // if ($scope.subscriptionsResult) {
-    //   console.log($scope.subscriptionsResult.items.length + " $scope.subscriptionsResult.items.length");
-    //   for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
-    //     console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId);
-    //
-    //
-    //     var config = {
-    //       id: $scope.subscriptionsResult.items[i].snippet.resourceId.channelId,
-    //       part: 'snippet,contentDetails',
-    //       maxResults: 5
-    //     }
-    //       var request = gapi.client.youtube.channels.list({
-    //         id: $scope.subscriptionsResult.items[i].snippet.resourceId.channelId,
-    //         part: 'snippet,contentDetails',
-    //         maxResults: 5
-    //       });
-    //       var ttt;
-    //       var yyy = request.execute(function (response, $scope) {
-    //
-    //         //  console.log($scope.subscriptionsResult);
-    //         $scope.playlistTemp = response.result;
-    //         ttt = response.result;
-    //         console.log($scope.playlistTemp);
-    //         return response.result;
-    //       }); console.log(yyy);
-    //
-    //     }
-    //
-    //   }
+  $scope.logResult = function () {
+    console.log($scope.subscriptionsResult);
   }
+
+  $scope.refreshUploads = function () {
+
+    for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+
+      googleService.googleApiClientReady(
+        "PlaylistItems",
+        $scope.subscriptionsResult.items[i].uploads.items[0].contentDetails.relatedPlaylists.uploads
+      ).then(function (data) {
+
+          console.log(data);
+
+          for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+
+            if ($scope.subscriptionsResult.items[i].uploads.uploadItems == null) {
+
+              $scope.subscriptionsResult.items[i].uploads.uploadItems = data;
+
+              return;
+            }
+
+          }
+
+
+        },
+        function (error) {
+          console.log('Failed: ' + error)
+        });
+
+    }
+  }
+
+
 }
