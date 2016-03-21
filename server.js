@@ -41,7 +41,12 @@ function readFileSync(file) {
 // app.use(express.bodyParser());
 
 app.post('/data', function(request, response){
-    console.log(request.data);
+  var fullBody = '';
+  request.on('data', function(chunk) {
+    // append the current chunk of data to the fullBody variable
+    fullBody += chunk.toString();
+console.log(fullBody);
+  });
     // write2file(request);
     response.send("got");
 });

@@ -126,9 +126,9 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
     $http.get('/data').then(
       function (response) {
-        // console.log(response);
-        $scope.collections = response.data;
+        $scope.collections = response.data.collections;
         console.log($scope.collections);
+        console.log($scope.collections.length);
         for (var i = 0; i < $scope.collections.length; i++) {
 
           for (var ii = 0; ii < $scope.collections[i].length; i++) {
@@ -175,13 +175,6 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
     }
 
     var config = "";
-
-
-    $.post("/data", JSON.stringify(data))
-      .done(function (data) {
-        console.log(data);
-      });
-
 
     $http.post('/data', JSON.stringify(data)).then(
       function (response) {
