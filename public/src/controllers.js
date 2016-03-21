@@ -43,7 +43,8 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
           ).then(function (data) {
 
               for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
-                if ($scope.subscriptionsResult.items[i].playlists == null) {
+                if($scope.subscriptionsResult.items[i].snippet.resourceId.channelId == data.items[0].snippet.channelId){
+
                   $scope.subscriptionsResult.items[i].playlists = data;
                   return;
                 }
@@ -100,11 +101,14 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
           for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
 
-            if ($scope.subscriptionsResult.items[i].uploads.uploadItems == null) {
 
+
+              if($scope.subscriptionsResult.items[i].snippet.resourceId.channelId == data.items[0].snippet.channelId){
+console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId  + " " +data.items[0].snippet.channelId);
               $scope.subscriptionsResult.items[i].uploads.uploadItems = data;
 
               return;
+
             }
 
           }

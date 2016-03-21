@@ -40,7 +40,7 @@ angular.module('youtApp')
           var request = gapi.client.youtube.playlistItems.list({
             part: 'snippet,contentDetails',
             playlistId: q,
-            maxResults: 10
+            maxResults: 4
           });
         } else {
           console.log("unknown type");
