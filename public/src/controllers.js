@@ -43,7 +43,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
           ).then(function (data) {
 
               for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
-                 if ($scope.subscriptionsResult.items[i].playlists == null) {
+                if ($scope.subscriptionsResult.items[i].playlists == null) {
 
                   $scope.subscriptionsResult.items[i].playlists = data;
                   return;
@@ -86,6 +86,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   };
   $scope.logResult = function () {
     console.log($scope.subscriptionsResult);
+    console.log($scope.collections);
   }
 
   $scope.refreshUploads = function () {
@@ -103,8 +104,8 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
 
 
-              if($scope.subscriptionsResult.items[i].snippet.resourceId.channelId == data.items[0].snippet.channelId){
-console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId  + " " +data.items[0].snippet.channelId);
+            if ($scope.subscriptionsResult.items[i].snippet.resourceId.channelId == data.items[0].snippet.channelId) {
+              console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId + " " + data.items[0].snippet.channelId);
               $scope.subscriptionsResult.items[i].uploads.uploadItems = data;
 
               return;
@@ -121,6 +122,74 @@ console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId  + 
 
     }
   }
+  $scope.showCollections = function () {
+
+    $http.get('/data').then(
+      function (response) {
+        // console.log(response);
+        $scope.collections = response.data;
+        console.log($scope.collections);
+        for (var i = 0; i < $scope.collections.length; i++) {
+
+          for (var ii = 0; ii < $scope.collections[i].length; i++) {
+
+            googleService.googleApiClientReady(
+              "PlaylistItems",
+              $scope.collections[i].ii.playlistId
+            ).then(function (data) {
+
+                console.log(data);
+
+                for (var i = 0; i < $scope.collections[i].ii.length; i++) {
 
 
+
+                  // if ( $scope.collections[i].ii.channelId == data.items[0].snippet.channelId) {
+                    console.log($scope.collections.items[i].snippet.resourceId.channelId + " " + data.items[0].snippet.channelId);
+                     $scope.collections[i].ii.uploads.uploadItems = data;
+
+                    return;
+
+                  // }
+
+                }
+
+
+              },
+              function (error) {
+                console.log('Failed: ' + error)
+              });
+
+          }
+        }
+        console.log("successful post");
+      },
+      function () {
+        console.log("error post");
+      });
+  }
+  $scope.collection = function (type, channelId) {
+    data = {
+      type: type,
+      channelId: channelId
+    }
+
+    var config = "";
+
+
+    $.post("/data", JSON.stringify(data))
+      .done(function (data) {
+        console.log(data);
+      });
+
+
+    $http.post('/data', JSON.stringify(data)).then(
+      function (response) {
+        console.log(response);
+        console.log("successful post");
+      },
+      function () {
+        console.log("error post");
+      });
+  }
 }

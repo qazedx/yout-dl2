@@ -28,7 +28,16 @@ angular.module('youtApp')
 
       }
     };
-  })
+  })  .directive('collections', function () {
+      return {
+        restrict: 'EA',
+        templateUrl: 'views/collections.html',
+        replace: false,
+        link: function ($scope, element, attr) {
+
+        }
+      };
+    })
   .directive('subscriptionslist', function () {
     return {
       restrict: 'EA',

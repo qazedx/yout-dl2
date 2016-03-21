@@ -21,3 +21,4 @@ tags
 /bower_components/
 /public/vid/
 /public/lib/*
+/data.json
