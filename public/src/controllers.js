@@ -43,7 +43,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
           ).then(function (data) {
 
               for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
-                if($scope.subscriptionsResult.items[i].snippet.resourceId.channelId == data.items[0].snippet.channelId){
+                 if ($scope.subscriptionsResult.items[i].playlists == null) {
 
                   $scope.subscriptionsResult.items[i].playlists = data;
                   return;

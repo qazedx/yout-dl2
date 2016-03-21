@@ -1,44 +1,95 @@
-.glyphicon.glyphicon-th-large:before,
-.glyphicon.glyphicon-th-list:before{
+.glyphicon.glyphicon-th-large:before, .glyphicon.glyphicon-th-list:before {
   background-color: #fff;
   font-size: 16px;
 }
-.vhidden{
+.vhidden {
   visibility: hidden!important;
 }
 .noselect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-.video-list  .video-list-item  video{
+.video-list .video-list-item video {
   display: none;
 }
-.video-list .video-list-item.viewVid-single video,
-.video-list.list-large  .video-list-item  video{
+.video-list .video-list-item.viewVid-single video, .video-list.list-large .video-list-item video {
   width: 100%;
   display: block;
 }
-.video-list.list-list  .video-list-item  video{
+.video-list.list-list .video-list-item video {
   max-width: 100px;
   display: inline-block;
 }
-.panel-body{
+.panel-body {
   padding: 0;
 }
-.add2list{
+.add2list {
   position: fixed;
   bottom: 0;
   left: 0;
 }
-.add2list input{
+.add2list input {
   width: 115px;
   display: inline-block;
 }
-.add2list button{
+.add2list button {
   width: 50px;
   display: inline-block;
+}
+.subscriptionslist .panel-heading {
+  padding: 0;
+}
+.subscriptionslist .panel-title a {
+  width: 100%;
+  display: block;
+  padding: 10px 15px;
+  outline: none;
+}
+video .description.expanded {
+  max-height: auto;
+}
+.video .description + label {
+  margin-top: -15px;
+  background: -webkit-linear-gradient(top, rgba(254, 254, 254, 1) -12%, rgb(48, 46, 46) 100%);
+  border: none;
+  color: #FFFFFF;
+  font-weight: bold;
+  text-transform: capitalize;
+  font-size: large;
+  padding-top: 15px;
+}
+.video .description {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  max-height: 150px;
+}
+.video .description {
+  animation: fade_animation 0.3s linear;
+  -webkit-animation: fade_animation 0.3s linear;
+}
+.video .description.expanded {
+  animation: fade_in_animation 0.3s linear;
+  -webkit-animation: fade_in_animation 0.3s linear;
+  max-height: 700px;
+}
+@keyframes fade_animation {
+  from {
+    max-height: 700px;
+  }
+  to {
+    max-height: 150px;
+  }
+}
+@keyframes fade_in_animation {
+  from {
+    max-height: 150px;
+  }
+  to {
+    max-height: 700px;
+  }
 }
