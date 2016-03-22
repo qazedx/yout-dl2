@@ -154,7 +154,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
               });
 
           }
-          collections[i]=collection
+          collections[i] = collection
           console.log(collections);
 
         }
@@ -164,10 +164,12 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         console.log("error post");
       });
   }
-  $scope.collection = function (type, channelId) {
+  $scope.collection = function (type, title, channelId, uploadsId) {
     data = {
       type: type,
-      channelId: channelId
+      title: title,
+      channelId: channelId,
+      uploadsId: uploadsId
     }
 
     var config = "";
