@@ -126,43 +126,39 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
     $http.get('/data').then(
       function (response) {
-        $scope.collections = response.data.collections;
-        console.log($scope.collections);
-        console.log($scope.collections.length);
-        for (var i = 0; i < $scope.collections.length; i++) {
+        var collections = response.data.collections;
+        for (var i = 0; i < collections.length; i++) {
 
-          for (var ii = 0; ii < $scope.collections[i].length; i++) {
-
+          var collection = collections[i]
+          console.log(collection.length);
+          console.log(i);
+          for (var i = 0; i < collection.length; i++) {
+            console.log(collection[i]);
             googleService.googleApiClientReady(
               "PlaylistItems",
-              $scope.collections[i].ii.playlistId
+              collection[i].playlistId
             ).then(function (data) {
+                for (var i = 0; i < collection.length; i++) {
 
-                console.log(data);
-
-                for (var i = 0; i < $scope.collections[i].ii.length; i++) {
-
-
-
-                  // if ( $scope.collections[i].ii.channelId == data.items[0].snippet.channelId) {
-                    console.log($scope.collections.items[i].snippet.resourceId.channelId + " " + data.items[0].snippet.channelId);
-                     $scope.collections[i].ii.uploads.uploadItems = data;
-
+                  if (collection[i].channelId == data.items[0].snippet.channelId) {
+                    console.log(i);
+                    collection[i].uploads = data;
+                    console.log(collection);
                     return;
-
-                  // }
+                  }
 
                 }
-
-
               },
               function (error) {
                 console.log('Failed: ' + error)
               });
 
           }
+          collections[i]=collection
+          console.log(collections);
+
         }
-        console.log("successful post");
+        console.log("successful get");
       },
       function () {
         console.log("error post");
