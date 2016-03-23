@@ -59,14 +59,12 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   }
 
   function getChannelUploads() {
+
     for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
       googleService.googleApiClientReady(
         "Channels",
         $scope.subscriptionsResult.items[i].snippet.resourceId.channelId
       ).then(function (data) {
-
-          //  console.log(data);
-
           for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
             if ($scope.subscriptionsResult.items[i].uploads == null) {
               $scope.subscriptionsResult.items[i].uploads = data;
@@ -100,6 +98,68 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       });
 
   }
+
+  function getPlaylistsItems(type) {
+    if (type == "subscriptions") {
+      for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+        var uploadsId = "UU" + $scope.subscriptionsResult.items[i].snippet.resourceId.channelId.substring(2);
+
+        googleService.googleApiClientReady(
+          "PlaylistItems",
+          uploadsId
+        ).then(function (data) {
+
+            console.log(data);
+
+            for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+
+
+
+              if ($scope.subscriptionsResult.items[i].snippet.resourceId.channelId == data.items[0].snippet.channelId) {
+                console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId + " " + data.items[0].snippet.channelId);
+                $scope.subscriptionsResult.items[i].uploads.uploadItems = data;
+
+                return;
+
+              }
+
+            }
+
+
+          },
+          function (error) {
+            console.log('Failed: ' + error)
+          });
+
+      }
+    }else if (type=="collections") {
+      for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+        var uploadsId = "UU" + $scope.subscriptionsResult.items[i].snippet.resourceId.channelId.substring(2);
+
+        googleService.googleApiClientReady(
+          "PlaylistItems",
+          uploadsId
+        ).then(function (data) {
+
+            console.log(data);
+
+            for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+              if ($scope.subscriptionsResult.items[i].snippet.resourceId.channelId == data.items[0].snippet.channelId) {
+                console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId + " " + data.items[0].snippet.channelId);
+                $scope.subscriptionsResult.items[i].uploads.uploadItems = data;
+
+                return;
+
+              }
+            }
+          },
+          function (error) {
+            console.log('Failed: ' + error)
+          });
+
+      }
+    }
+  }
   $scope.getSubscriptions = function () {
     getSubscriptions()
 
@@ -107,40 +167,6 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   $scope.logResult = function () {
     console.log($scope.subscriptionsResult);
     console.log($scope.collections);
-  }
-
-  function getPlaylistsItems() {
-    for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
-      var uploadsId = "UU" + $scope.subscriptionsResult.items[i].snippet.resourceId.channelId.substring(2);
-
-      googleService.googleApiClientReady(
-        "PlaylistItems",
-        uploadsId
-      ).then(function (data) {
-
-          console.log(data);
-
-          for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
-
-
-
-            if ($scope.subscriptionsResult.items[i].snippet.resourceId.channelId == data.items[0].snippet.channelId) {
-              console.log($scope.subscriptionsResult.items[i].snippet.resourceId.channelId + " " + data.items[0].snippet.channelId);
-              $scope.subscriptionsResult.items[i].uploads.uploadItems = data;
-
-              return;
-
-            }
-
-          }
-
-
-        },
-        function (error) {
-          console.log('Failed: ' + error)
-        });
-
-    }
   }
   $scope.refreshUploads = function () {
     getPlaylistsItems();
