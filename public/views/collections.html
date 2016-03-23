@@ -13,8 +13,9 @@ logResult
 </p>
 <div class="">
   <!-- {{item.snippet.title}} -->
-  <uib-accordion close-others="oneAtATime" class="subscriptionslist">
-    <uib-accordion-group ng-repeat="item in collections">
+
+  <uib-accordion ng-repeat="collection in collections" close-others="oneAtATime" class="subscriptionslist">
+    <uib-accordion-group ng-repeat="item in collection">
       <uib-accordion-heading>
         {{item.title}}  <i class="pull-right glyphicon"
         ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>

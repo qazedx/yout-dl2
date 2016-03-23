@@ -127,50 +127,62 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
     $http.get('/data').then(
       function (response) {
 
-        var collections = response.data.collections;
-        for (var i = 0; i < collections.length; i++) {
+        $scope.collections = response.data.collections;
 
-          var collection = collections[i]
-          console.log(collection.length);
-          console.log(i);
+        for (var i = 0; i < $scope.collections.length; i++) {
+
+          var collection = $scope.collections[i];
+            console.log(i);
           for (var i = 0; i < collection.length; i++) {
-            console.log(collection[i]);
-            googleService.googleApiClientReady(
-              "PlaylistItems",
-              collection[i].playlistId
-            ).then(function (data) {
-                for (var i = 0; i < collection.length; i++) {
+            if (i !== 0) {
+// console.log(collection[i]);
+              googleService.googleApiClientReady(
+                "PlaylistItems",
+                collection[i].playlistId
+              ).then(function (data) {
+                  for (var i = 0; i < collection.length; i++) {
+                    console.log(data);
+                    console.log(i + " " +collection[i].title +" " +data.items[0].snippet.title);
+                    console.log(collection[i].channelId +"  "+data.items[0].snippet.channelId);
 
-                  if (collection[i].channelId == data.items[0].snippet.channelId) {
-                    console.log(i);
-                    collection[i].uploads = data;
-                    console.log(collection);
-                    return;
+                    if (collection[i].channelId == data.items[0].snippet.channelId) {
+                      collection[i].uploads = data;
+                      // console.log(data);
+                      return;
+                    }
+
                   }
-
-                }
-              },
-              function (error) {
-                console.log('Failed: ' + error)
-              });
+                },
+                function (error) {
+                  console.log('Failed: ' + error)
+                });
+            }
 
           }
-          $scope.collections = collection
-          console.log(collections);
+
+          for (var i = 0; i < $scope.collections.length; i++) {
+            if ($scope.collections[i][0].title == collection[0].title) {
+              $scope.collections[i] = collection;
+              return;
+            }
+          }
 
         }
+
         console.log("successful get");
       },
       function () {
         console.log("error post");
       });
   }
-  $scope.collection = function (type, title, channelId, uploadsId) {
+  $scope.collection = function (type, title, channelId) {
+    channelId = channelId.substring(2)
+    console.log(channelId);
     data = {
       type: type,
       title: title,
-      channelId: channelId,
-      uploadsId: uploadsId
+      channelId: "UC"+channelId,
+      uploadsId: "UU"+channelId
     }
 
     var config = "";

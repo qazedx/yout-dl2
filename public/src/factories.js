@@ -36,7 +36,7 @@ angular.module('youtApp')
             maxResults: 3
           });
         } else if (type == "PlaylistItems") {
-          console.log(q);
+          // console.log(q);
           var request = gapi.client.youtube.playlistItems.list({
             part: 'snippet,contentDetails',
             playlistId: q,
