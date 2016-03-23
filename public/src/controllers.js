@@ -126,6 +126,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
     $http.get('/data').then(
       function (response) {
+
         var collections = response.data.collections;
         for (var i = 0; i < collections.length; i++) {
 
@@ -154,7 +155,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
               });
 
           }
-          collections[i] = collection
+          $scope.collections = collection
           console.log(collections);
 
         }
