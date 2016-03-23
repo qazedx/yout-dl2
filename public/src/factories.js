@@ -19,7 +19,7 @@ angular.module('youtApp')
             part: 'snippet,contentDetails',
             type: 'channel',
             mine: true,
-            maxResults: 10
+            maxResults: 5
           });
         }else if (type == "Paylists") {
         //  console.log(q);

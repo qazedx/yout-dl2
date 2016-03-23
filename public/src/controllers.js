@@ -10,6 +10,7 @@ function searchController($rootScope, $scope, googleService) {
       "3": "s2"
     }
   }
+
   $scope.Search = function (searchModel) {
     var q = $scope.searchModel;
 
@@ -28,54 +29,69 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
   $window.initGapi = function () {
     $scope.$apply($scope.getChannel);
+
   };
 
-  $scope.showSubscriptions = function () {
+  // init functions
+  setTimeout(function () {
+      getSubscriptions();
+
+    }, 1000)
+    // init functions End
+
+
+  function getSubscriptions() {
 
     googleService.googleApiClientReady("Subscriptions").then(function (data) {
         $scope.subscriptionsResult = data;
+
+        getChannelUploads();
+
+        //  getChannelPlaylists();
+
+        getPlaylistsItems();
+
+      },
+      function (error) {
+        console.log('Failed: ' + error)
+      });
+
+  }
+
+  function getChannelUploads() {
+    for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+      googleService.googleApiClientReady(
+        "Channels",
+        $scope.subscriptionsResult.items[i].snippet.resourceId.channelId
+      ).then(function (data) {
+
+          //  console.log(data);
+
+          for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+            if ($scope.subscriptionsResult.items[i].uploads == null) {
+              $scope.subscriptionsResult.items[i].uploads = data;
+              return;
+            }
+          }
+        },
+        function (error) {
+          console.log('Failed: ' + error)
+        });
+    }
+  }
+
+  function getChannelPlaylists() {
+    googleService.googleApiClientReady(
+      "Paylists",
+      $scope.subscriptionsResult.items[i].snippet.resourceId.channelId
+    ).then(function (data) {
+
         for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+          if ($scope.subscriptionsResult.items[i].playlists == null) {
 
-          // playlists
-          googleService.googleApiClientReady(
-            "Paylists",
-            $scope.subscriptionsResult.items[i].snippet.resourceId.channelId
-          ).then(function (data) {
-
-              for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
-                if ($scope.subscriptionsResult.items[i].playlists == null) {
-
-                  $scope.subscriptionsResult.items[i].playlists = data;
-                  return;
-                }
-              }
-
-            },
-            function (error) {
-              console.log('Failed: ' + error)
-            });
-
-          // uploads
-          googleService.googleApiClientReady(
-            "Channels",
-            $scope.subscriptionsResult.items[i].snippet.resourceId.channelId
-          ).then(function (data) {
-
-              //  console.log(data);
-
-              for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
-                if ($scope.subscriptionsResult.items[i].uploads == null) {
-                  $scope.subscriptionsResult.items[i].uploads = data;
-                  return;
-                }
-              }
-            },
-            function (error) {
-              console.log('Failed: ' + error)
-            });
-
-          // uploads END
-
+            $scope.subscriptionsResult.items[i].playlists = data;
+            return;
+          }
         }
 
       },
@@ -83,19 +99,23 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         console.log('Failed: ' + error)
       });
 
+  }
+  $scope.getSubscriptions = function () {
+    getSubscriptions()
+
   };
   $scope.logResult = function () {
     console.log($scope.subscriptionsResult);
     console.log($scope.collections);
   }
 
-  $scope.refreshUploads = function () {
-
+  function getPlaylistsItems() {
     for (var i = 0; i < $scope.subscriptionsResult.items.length; i++) {
+      var uploadsId = "UU" + $scope.subscriptionsResult.items[i].snippet.resourceId.channelId.substring(2);
 
       googleService.googleApiClientReady(
         "PlaylistItems",
-        $scope.subscriptionsResult.items[i].uploads.items[0].contentDetails.relatedPlaylists.uploads
+        uploadsId
       ).then(function (data) {
 
           console.log(data);
@@ -122,6 +142,9 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
     }
   }
+  $scope.refreshUploads = function () {
+    getPlaylistsItems();
+  }
   $scope.showCollections = function () {
 
     $http.get('/data').then(
@@ -132,29 +155,29 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         for (var i = 0; i < $scope.collections.length; i++) {
 
           var collection = $scope.collections[i];
-            console.log(i);
+          console.log(i);
           for (var i = 0; i < collection.length; i++) {
 
-              googleService.googleApiClientReady(
-                "PlaylistItems",
-                collection[i].playlistId
-              ).then(function (data) {
-                  for (var i = 0; i < collection.length; i++) {
-                    console.log(data);
-                    console.log(i + " " +collection[i].title +" " +data.items[0].snippet.title);
-                    console.log(collection[i].channelId +"  "+data.items[0].snippet.channelId);
+            googleService.googleApiClientReady(
+              "PlaylistItems",
+              collection[i].playlistId
+            ).then(function (data) {
+                for (var i = 0; i < collection.length; i++) {
+                  console.log(data);
+                  console.log(i + " " + collection[i].title + " " + data.items[0].snippet.title);
+                  console.log(collection[i].channelId + "  " + data.items[0].snippet.channelId);
 
-                    if (collection[i].channelId == data.items[0].snippet.channelId) {
-                      collection[i].uploads = data;
-                      // console.log(data);
-                      return;
-                    }
-
+                  if (collection[i].channelId == data.items[0].snippet.channelId) {
+                    collection[i].uploads = data;
+                    // console.log(data);
+                    return;
                   }
-                },
-                function (error) {
-                  console.log('Failed: ' + error)
-                });
+
+                }
+              },
+              function (error) {
+                console.log('Failed: ' + error)
+              });
 
           }
 
@@ -179,8 +202,8 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
     data = {
       type: type,
       title: title,
-      channelId: "UC"+channelId,
-      uploadsId: "UU"+channelId
+      channelId: "UC" + channelId,
+      uploadsId: "UU" + channelId
     }
 
     var config = "";
@@ -193,5 +216,22 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       function () {
         console.log("error post");
       });
+  }
+
+  $scope.getChannels = function () {
+    var tt = googleService.googleApiClientReady("SubscriptionsN");
+    console.log(JSON.stringify(tt));
+  }
+
+  function getChannels() {
+    var data = {};
+    googleService.googleApiClientReady("Subscriptions").then(function (data) {
+        data = data;
+        return data;
+      },
+      function (error) {
+        console.log('Failed: ' + error)
+      });
+    return data;
   }
 }
