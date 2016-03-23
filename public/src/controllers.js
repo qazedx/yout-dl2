@@ -134,8 +134,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
           var collection = $scope.collections[i];
             console.log(i);
           for (var i = 0; i < collection.length; i++) {
-            if (i !== 0) {
-// console.log(collection[i]);
+
               googleService.googleApiClientReady(
                 "PlaylistItems",
                 collection[i].playlistId
@@ -156,7 +155,6 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
                 function (error) {
                   console.log('Failed: ' + error)
                 });
-            }
 
           }
 
