@@ -59,9 +59,10 @@ app.post('/data', function (request, response) {
         channelId: fullBody.channelId,
         playlistId: fullBody.uploadsId
       }
-      obj.collections[0].push(data);
+      console.log(fullBody);
+      obj.collections[fullBody.collection].push(data);
     }
-    write2file(obj);
+   write2file(obj);
   });
   // write2file(request);
 

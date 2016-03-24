@@ -34,6 +34,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   // init functions
   setTimeout(function () {
       getCollections();
+      refreshSubscriptions();
     }, 1000)
     // init functions End
   $scope.nextPageToken = "";
@@ -181,6 +182,17 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       function (response) {
 
         $scope.collectionsResult = response.data.collections;
+
+        console.log("successful get");
+      },
+      function () {
+        console.log("error post");
+      });
+  }
+  function refreshSubscriptions() {
+    $http.get('/data').then(
+      function (response) {
+
         $scope.subscriptionsResult = response.data.subscriptions;
 
         console.log("successful get");
@@ -208,22 +220,25 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
     getCollections();
 
   }
-  $scope.collection = function (type, title, channelId) {
+  $scope.collection = function (type, title, channelId, collection) {
+
     if (type == 'add') {
 
       channelId = channelId.substring(2);
       data = {
         type: type,
         title: title,
+        collection: collection,
         channelId: "UC" + channelId,
         uploadsId: "UU" + channelId
       }
-
+console.log(data);
       var config = "";
 
       $http.post('/data', JSON.stringify(data)).then(
         function (response) {
           console.log("successful post");
+         getCollections();
         },
         function () {
           console.log("error post");

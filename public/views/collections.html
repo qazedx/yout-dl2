@@ -1,19 +1,18 @@
-<button type="button" class="btn btn-default" ng-click="logResult()" name="button">
-  logResult
-</button>
-</br>
-<button type="button" class="btn btn-default" ng-click="showCollections()" name="button">
-  show collections
-</button>
-<button type="button" class="btn btn-default" ng-click="refreshUploadsCollections()" name="button">
-  Refresh Uploads collections
-</button>
+  <button type="button" class="btn btn-default" ng-click="logResult()" name="button">
+    logResult
+  </button>
+  <button type="button" class="btn btn-default pull-right" ng-click="showCollections()" name="button">
+    Refresh collections list
+  </button>
+<div ng-hide="true" class="">
+  </br>
+  <button type="button" class="btn btn-default" ng-click="refreshUploadsCollections()" name="button">
+    Refresh Uploads collections
+  </button>
 
-<p>
-  collections list
-</p>
+</div>
+
 <div class="">
-  <!-- {{item.snippet.title}} -->
   <div class="collections-wrapper" ng-repeat="(key, value) in collectionsResult">
 
     <h4>{{key}}</h4>
@@ -28,8 +27,8 @@
 
           <div class="video" ng-repeat="videoItem in item.uploads.items">
             <h4 class="btn-block">  {{videoItem.snippet.title}}</h4>
-            <a href="https://www.youtube.com/watch?v={{item.uploads.uploadItems.items[0].contentDetails.videoId}}" target="_blank">
-              <img ng-src="{{videoItem.snippet.thumbnails.default.url}}" alt="" /></a>
+            <a href="https://www.youtube.com/watch?v={{videoItem.contentDetails.videoId}}&list={{item.uploads.items[0].snippet.playlistId}}" target="_blank">
+              <img ng-src="{{videoItem.snippet.thumbnails.high.url}}" alt="" /></a>
             <div class="description" ng-class="{expanded: showDescription == true, '': showDescription == false}">
               <p>
                 {{videoItem.snippet.description}}

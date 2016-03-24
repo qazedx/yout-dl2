@@ -1,35 +1,47 @@
-<button type="button" class="btn btn-default" ng-click="getSubscriptions()" name="button">
-  Refresh subscriptions list
-</button>
-
-<p>
-  subscriptions list
-</p>
 <div class="form-group">
   <input class="form-control" type="search" ng-model="q" placeholder="filter subscriptions" />
+  <button type="button" class="btn btn-default glyphicon glyphicon-refresh  pull-right" ng-click="getSubscriptions()" name="button">
+    Refresh subscriptions list
+  </button>
+  <div class="clearfix"></div>
 </div>
 <div class="">
   <!-- {{item.snippet.title}} -->
   <uib-accordion close-others="oneAtATime" class="subscriptionslist">
     <uib-accordion-group ng-repeat="item in subscriptionsResult| filter:q as results">
 
-      <uib-accordion-heading >
-        <div  ng-click="collection('get-uploads', item.title,item.channelId)">
-        {{item.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+      <uib-accordion-heading>
+        <div ng-click="collection('get-uploads', item.title,item.channelId)">
+          {{item.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
 
         </div>
       </uib-accordion-heading>
+      <div class="form-group">
 
-      <a href="https://www.youtube.com/watch?v={{item.uploads.items[0].contentDetails.videoId}}&list={{item.uploads.items[0].snippet.playlistId}}" target="_blank" class="btn btn-block btn-default">Uploads</a>
-      <button class="btn btn-block btn-default" type="button" name="button" ng-click="collection('add', item.snippet.title, item.snippet.resourceId.channelId)">add to collection</button>
-      <button class="btn btn-block btn-default col-xs-6" type="button" name="button" ng-click="collection('get-uploads', item.title,item.channelId)"> Get uploads</button>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-6">
+          <form class="form-inline">
+            <div class="form-group">
+              <select class="form-control" name="collection" ng-model="collectionModel.collection">
+                <option value="{{key}}" ng-repeat="(key, value) in collectionsResult">add to: {{key}}</option>
+              </select>
+              <button class="btn btn-default" ng-click="collection('add', item.title, item.channelId, collectionModel.collection)" type="button" name="button"> add</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-xs-6">
+          <button class="btn btn-block btn-default" type="button" name="button" ng-click="collection('get-uploads', item.title, item.channelId)"> Get uploads</button>
+        </div>
+
+      </div>
       <div class="clearfix"></div>
       <div class="playlist">
 
         <div class="video" ng-repeat="videoItem in item.uploads.items">
           <h4 class="btn-block">  {{videoItem.snippet.title}}</h4>
-          <a href="https://www.youtube.com/watch?v={{item.uploads.uploadItems.items[0].contentDetails.videoId}}" target="_blank">
-            <img ng-src="{{videoItem.snippet.thumbnails.default.url}}" alt="" /></a>
+          <a href="https://www.youtube.com/watch?v={{videoItem.contentDetails.videoId}}&list={{item.uploads.items[0].snippet.playlistId}}" target="_blank">
+            <img ng-src="{{videoItem.snippet.thumbnails.high.url}}" alt="" /></a>
           <div class="description" ng-class="{expanded: showDescription == true, '': showDescription == false}">
             <p>
               {{videoItem.snippet.description}}
