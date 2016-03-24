@@ -23,6 +23,7 @@
           {{item.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </uib-accordion-heading>
         <a ng-href="https://www.youtube.com/watch?v={{item.uploads.items[0].snippet.resourceId.videoId}}&list={{item.playlistId}}" target="_blank" class="btn btn-block btn-default">Uploads</a>
+        <button type="button" name="button" ng-click="collection('remove', item.title, item.channelId, key)" class="btn btn-default pull-right">Remove</button><div class="clearfix"></div>
         <div class="playlist">
 
           <div class="video" ng-repeat="videoItem in item.uploads.items">

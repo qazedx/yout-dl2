@@ -243,6 +243,27 @@ console.log(data);
         function () {
           console.log("error post");
         });
+    }else if (type == 'remove') {
+
+      channelId = channelId.substring(2);
+      data = {
+        type: type,
+        title: title,
+        collection: collection,
+        channelId: "UC" + channelId,
+        uploadsId: "UU" + channelId
+      }
+console.log(data);
+      var config = "";
+
+      $http.post('/data', JSON.stringify(data)).then(
+        function (response) {
+          console.log("successful post");
+         getCollections();
+        },
+        function () {
+          console.log("error post");
+        });
     } else if (type == "get-uploads") {
       getPlaylistsItems('subscriptions', channelId)
     }

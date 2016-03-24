@@ -61,8 +61,18 @@ app.post('/data', function (request, response) {
       }
       console.log(fullBody);
       obj.collections[fullBody.collection].push(data);
+    } else if (fullBody.type == "remove") {
+
+      console.log("fullBody");
+      for (var i = 0; i < obj.collections[fullBody.collection].length; i++) {
+        console.log(obj.collections[fullBody.collection][i].channelId+ " "+ fullBody.channelId);
+        if (obj.collections[fullBody.collection][i].channelId == fullBody.channelId) {
+          obj.collections[fullBody.collection].splice(i, 1);
+
+        }
+      }
     }
-   write2file(obj);
+    write2file(obj);
   });
   // write2file(request);
 
