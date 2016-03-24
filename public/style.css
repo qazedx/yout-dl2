@@ -77,6 +77,13 @@ video .description.expanded {
   -webkit-animation: fade_in_animation 0.3s linear;
   max-height: 700px;
 }
+.collections-wrapper h4{
+  text-transform: capitalize;
+}
+.collections-wrapper h4+button{
+  margin-top: -40px;
+}
+
 @keyframes fade_animation {
   from {
     max-height: 700px;
