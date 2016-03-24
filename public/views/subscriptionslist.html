@@ -12,12 +12,18 @@
   <!-- {{item.snippet.title}} -->
   <uib-accordion close-others="oneAtATime" class="subscriptionslist">
     <uib-accordion-group ng-repeat="item in subscriptionsResult| filter:q as results">
+
       <uib-accordion-heading >
+        <div  ng-click="collection('get-uploads', item.title,item.channelId)">
         {{item.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+
+        </div>
       </uib-accordion-heading>
-      <button ng-click="collection('get-uploads', item.title,item.channelId)" type="button" name="button">get-uploads</button>
-      <a href="https://www.youtube.com/watch?v={{item.uploads.uploadItems.items[0].contentDetails.videoId}}&list={{item.uploads.items[0].contentDetails.relatedPlaylists.uploads}}" target="_blank" class="btn btn-block btn-default">Uploads</a>
-      <button type="button" name="button" ng-click="collection('add', item.snippet.title, item.snippet.resourceId.channelId)">add to collection</button>
+
+      <a href="https://www.youtube.com/watch?v={{item.uploads.items[0].contentDetails.videoId}}&list={{item.uploads.items[0].snippet.playlistId}}" target="_blank" class="btn btn-block btn-default">Uploads</a>
+      <button class="btn btn-block btn-default" type="button" name="button" ng-click="collection('add', item.snippet.title, item.snippet.resourceId.channelId)">add to collection</button>
+      <button class="btn btn-block btn-default col-xs-6" type="button" name="button" ng-click="collection('get-uploads', item.title,item.channelId)"> Get uploads</button>
+      <div class="clearfix"></div>
       <div class="playlist">
 
         <div class="video" ng-repeat="videoItem in item.uploads.items">
