@@ -1,6 +1,7 @@
 <button type="button" class="btn btn-default" ng-click="logResult()" name="button">
-logResult
-</button></br>
+  logResult
+</button>
+</br>
 <button type="button" class="btn btn-default" ng-click="showCollections()" name="button">
   show collections
 </button>
@@ -13,33 +14,37 @@ logResult
 </p>
 <div class="">
   <!-- {{item.snippet.title}} -->
+  <div class="" ng-repeat="(key, value) in collections">
 
-  <uib-accordion ng-repeat="collection in collections" close-others="oneAtATime" class="subscriptionslist">
-    <uib-accordion-group ng-repeat="item in collection">
-      <uib-accordion-heading>
-        {{item.title}}  <i class="pull-right glyphicon"
-        ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-      </uib-accordion-heading>
-    <a ng-href="https://www.youtube.com/watch?v={{item.uploads.items[0].snippet.resourceId.videoId}}&list={{item.playlistId}}" target="_blank" class="btn btn-block btn-default">Uploads</a>
-      <div class="playlist">
+<h4>{{key}}</h4>
+    <uib-accordion close-others="oneAtATime" class="subscriptionslist">
+      <uib-accordion-group ng-repeat="item in collections[key]">
+        <uib-accordion-heading>
+          {{item.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        </uib-accordion-heading>
+        <a ng-href="https://www.youtube.com/watch?v={{item.uploads.items[0].snippet.resourceId.videoId}}&list={{item.playlistId}}" target="_blank" class="btn btn-block btn-default">Uploads</a>
+        <div class="playlist">
 
-        <div class="video" ng-repeat="videoItem in item.uploads.items">
-        <h4 class="btn-block">  {{videoItem.snippet.title}}</h4>
-<a href="https://www.youtube.com/watch?v={{item.uploads.uploadItems.items[0].contentDetails.videoId}}" target="_blank">
-          <img ng-src="{{videoItem.snippet.thumbnails.default.url}}" alt="" /></a>
-          <div class="description" ng-class="{expanded: showDescription == true, '': showDescription == false}">
-            <p>
-              {{videoItem.snippet.description}}
-            </p>
+          <div class="video" ng-repeat="videoItem in item.uploads.items">
+            <h4 class="btn-block">  {{videoItem.snippet.title}}</h4>
+            <a href="https://www.youtube.com/watch?v={{item.uploads.uploadItems.items[0].contentDetails.videoId}}" target="_blank">
+              <img ng-src="{{videoItem.snippet.thumbnails.default.url}}" alt="" /></a>
+            <div class="description" ng-class="{expanded: showDescription == true, '': showDescription == false}">
+              <p>
+                {{videoItem.snippet.description}}
+              </p>
+            </div>
+            <label class="btn btn-block">show description
+              <input ng-hide="true" type="checkbox" name="name" value="" ng-model="showDescription">
+            </label>
           </div>
-          <label class="btn btn-block">show description<input ng-hide="true" type="checkbox" name="name" value="" ng-model="showDescription"></label>
+          <hr>
         </div>
-        <hr>
-      </div>
 
 
-      <div>{{item.snippet.description}}</div>
-    </uib-accordion-group>
+        <div>{{item.snippet.description}}</div>
+      </uib-accordion-group>
 
-  </uib-accordion>
+    </uib-accordion>
+  </div>
 </div>
