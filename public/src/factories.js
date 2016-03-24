@@ -15,10 +15,12 @@ angular.module('youtApp')
             part: 'snippet'
           });
         } else if (type == "Subscriptions") {
+          console.log(q);
           var request = gapi.client.youtube.subscriptions.list({
             part: 'snippet,contentDetails',
             type: 'channel',
             mine: true,
+            pageToken:q,
             maxResults: 5
           });
         }else if (type == "Paylists") {

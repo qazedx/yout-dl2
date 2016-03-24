@@ -34,22 +34,52 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
   // init functions
   setTimeout(function () {
-      getSubscriptions();
-      getCollections();
+      //  getSubscriptions();
+      //  getCollections();
     }, 1000)
     // init functions End
-
+  $scope.nextPageToken = "";
+  $scope.subscriptionsResult = [];
 
   function getSubscriptions() {
 
-    googleService.googleApiClientReady("Subscriptions").then(function (data) {
-        $scope.subscriptionsResult = data;
+    googleService.googleApiClientReady("Subscriptions", $scope.nextPageToken).then(function (data) {
 
-        getChannelUploads();
+        $scope.nextPageToken = data.nextPageToken;
+         console.log(data.nextPageToken);
+
+        for (var i = 0; i < data.items.length; i++) {
+          console.log($scope.subscriptionsResult);
+          $scope.subscriptionsResult.push(data.items[i].snippet.resourceId.channelId);
+        }
+
+        if ($scope.nextPageToken == undefined) {
+          data = {
+            type: "subsctiptions-list",
+            list: $scope.subscriptionsResult
+          }
+
+          var config = "";
+
+          $http.post('/data', JSON.stringify(data)).then(
+            function (response) {
+              console.log(response);
+              console.log("successful post");
+            },
+            function () {
+              console.log("error post");
+            });
+        } else {
+          getSubscriptions();
+
+        }
+
+
+        //  getChannelUploads();
 
         //  getChannelPlaylists();
 
-        getPlaylistsItems();
+        //  getPlaylistsItems();
 
       },
       function (error) {

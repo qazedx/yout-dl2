@@ -50,18 +50,18 @@ app.post('/data', function (request, response) {
     fullBody = JSON.parse(fullBody)
     response.send("got");
     console.log(fullBody);
-
     var obj = readFileSync('data.json');
-    console.log(obj.collections);
-    console.log(fullBody.channelId);
-    data = {
-      title: fullBody.title,
-      channelId: fullBody.channelId,
-      playlistId: fullBody.uploadsId
+    if (fullBody.type == "subsctiptions-list") {
+      obj.subscriptions = fullBody.list
+    } else if (fullBody.type == "add") {
+      data = {
+        title: fullBody.title,
+        channelId: fullBody.channelId,
+        playlistId: fullBody.uploadsId
+      }
+      obj.collections[0].push(data);
     }
-    obj.collections[0].push(data);
     write2file(obj);
-
   });
   // write2file(request);
 
