@@ -281,23 +281,19 @@ $scope.makePlaylist=function(collection){
   function makePlaylist(collection) {
     $scope.iframeList = [];
     var firstVideo;
-    console.log("ll" +collection);
     for (var i = 0; i < $scope.collectionsResult[collection].length; i++) {
-      console.log($scope.collectionsResult[collection][i].uploads.items);
       var items = $scope.collectionsResult[collection][i].uploads.items;
-      for (var i = 0; i < items.length; i++) {
+      for (var j = 0; j < items.length; j++) {
         if (i==0) {
-          firstVideo = items[i].snippet.resourceId.videoId;
-          console.log(firstVideo);
+          firstVideo = items[j].snippet.resourceId.videoId;
         }
-        $scope.iframeList.push(items[i].snippet.resourceId.videoId);
+        $scope.iframeList.push(items[j].snippet.resourceId.videoId);
       }
     }
     var length = $scope.iframeList.length;
     $scope.iframeList =$sce.trustAsResourceUrl( "http://www.youtube.com/v/"+firstVideo.toString()+"?version=3&playlist="+$scope.iframeList.toString());
 
 
-    console.log($scope.iframeList);
   }
 
   function getChannels() {
