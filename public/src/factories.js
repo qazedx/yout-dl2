@@ -2,7 +2,7 @@ angular.module('youtApp')
   .service('googleService', ['$http', '$q', function ($http, $q) {
 
 
-    this.googleApiClientReady = function (type, q, maxResults) {
+    this.googleApiClientReady = function (type, q, maxResults, mine) {
       var deferred = $q.defer();
       if (maxResults == undefined) {
         maxResults = 3;
@@ -30,7 +30,9 @@ angular.module('youtApp')
           var request = gapi.client.youtube.playlists.list({
             part: 'snippet,contentDetails',
             channelId: q,
-            maxResults: 3
+            maxResults: 3,
+            mine: mine
+
           });
         } else if (type == "Channels") {
           //  console.log(q);

@@ -58,3 +58,13 @@ angular.module('youtApp')
       }
     };
   })
+  .directive('myplaylists', function () {
+    return {
+      restrict: 'EA',
+      templateUrl: 'views/myplaylists.html',
+      replace: false,
+      link: function ($scope, element, attr) {
+
+      }
+    };
+  })

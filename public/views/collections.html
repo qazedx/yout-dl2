@@ -27,8 +27,8 @@
 
 </div>
 
-<div class="">
-  <div class="col-xs-15 col-sm-6 collections-wrapper" ng-click="refreshUploadsCollection(key)" ng-repeat="(key, value) in collectionsResult">
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-lg-4 collections-wrapper" ng-click="refreshUploadsCollection(key)" ng-repeat="(key, value) in collectionsResult">
 
     <h4><strong>{{key}}</strong></h4>
     <div class="controls">
@@ -50,7 +50,7 @@
         <div class="playlist">
 
           <div class="video" ng-repeat="videoItem in item.uploads.items">
-            <h4 class="btn-block">  {{videoItem.snippet.title}}</h4>
+            <h4 class="btn-block">{{videoItem.snippet.title}}</h4>
             <a href="https://www.youtube.com/watch?v={{videoItem.contentDetails.videoId}}&list={{item.uploads.items[0].snippet.playlistId}}" target="_blank">
               <img class="img-responsive" ng-src="{{videoItem.snippet.thumbnails.high.url}}" alt="" /></a>
             <div class="description" ng-class="{expanded: showDescription == true, '': showDescription == false}">
