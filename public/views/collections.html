@@ -1,23 +1,24 @@
-<button type="button" class="btn btn-default" ng-click="logResult()" name="button">
-  logResult
-</button>
-<form class="form-inline">
+<form class="form-inline form-group">
+  <br>
+  <button type="button" class="btn btn-default" ng-click="logResult()" name="button">
+    logResult
+  </button>
   <div class="form-group">
     <input type="text" name="newCollection" class="form-control" placeholder="New collection" ng-model="newCollection.collectionName">
     <button class="btn btn-default" type="button" name="button" ng-click="newCollection(newCollection.collectionName)">add</button>
   </div>
-</form>
-<form class="form-inline">
+
   <div class="form-group">
     <select class="form-control" name="collection" ng-model="collectionModel.collection">
       <option value="{{key}}" ng-repeat="(key, value) in collectionsResult">add to: {{key}}</option>
     </select>
     <button class="btn btn-default" ng-click="removeCollection(collectionModel.collection)" type="button" name="button"> remove</button>
   </div>
+  <button type="button" class="btn btn-default pull-right" ng-click="showCollections()" name="button">
+    Refresh list
+  </button>
 </form>
-<button type="button" class="btn btn-default pull-right" ng-click="showCollections()" name="button">
-  Refresh collections list
-</button>
+<div class="clearfix"></div>
 <div ng-hide="true" class="">
   </br>
   <button type="button" class="btn btn-default" ng-click="refreshUploadsCollections()" name="button">
@@ -27,9 +28,9 @@
 </div>
 
 <div class="">
-  <div class="collections-wrapper" ng-repeat="(key, value) in collectionsResult">
+  <div class="col-xs-15 col-sm-6 collections-wrapper" ng-click="refreshUploadsCollection(key)" ng-repeat="(key, value) in collectionsResult">
 
-    <h4>{{key}}</h4>
+    <h4><strong>{{key}}</strong></h4>
     <div class="controls">
       <button type="button" name="button" ng-click="refreshUploadsCollection(key)" class="btn btn-default glyphicon glyphicon-refresh pull-right"></button>
       <button type="button" name="button" ng-click="makePlaylist(key)" class="btn btn-default  pull-right">Playlist</button>
@@ -51,7 +52,7 @@
           <div class="video" ng-repeat="videoItem in item.uploads.items">
             <h4 class="btn-block">  {{videoItem.snippet.title}}</h4>
             <a href="https://www.youtube.com/watch?v={{videoItem.contentDetails.videoId}}&list={{item.uploads.items[0].snippet.playlistId}}" target="_blank">
-              <img ng-src="{{videoItem.snippet.thumbnails.high.url}}" alt="" /></a>
+              <img class="img-responsive" ng-src="{{videoItem.snippet.thumbnails.high.url}}" alt="" /></a>
             <div class="description" ng-class="{expanded: showDescription == true, '': showDescription == false}">
               <p>
                 {{videoItem.snippet.description}}

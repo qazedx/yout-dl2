@@ -89,7 +89,12 @@ video .description.expanded {
   text-transform: capitalize;
 }
 .collections-wrapper h4+.controls{
+  top: -5px;
+  position: relative;
   margin-top: -30px;
+}
+.collections-wrapper h4+.controls button.glyphicon-refresh{
+  margin-top: -1px;
 }
 .panel-body {
   background: #5A5A5A;
