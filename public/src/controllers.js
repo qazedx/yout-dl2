@@ -102,7 +102,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
 
 
-  function getPlaylistsItems(type, arg1) {
+  function getPlaylistsItems(type, arg1, arg2) {
     if (type == "subscriptions") {
 
       var uploadsId = "UU" + arg1.substring(2);
@@ -152,6 +152,58 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
             console.log('Failed: ' + error)
           });
 
+      }
+    } else if (type == "get-more-uploads") {
+      if (arg2 !== undefined) {
+        for (var i = 0; i < $scope.collectionsResult[arg2].length; i++) {
+          var uploadsId = "UU" + arg1.substring(2);
+
+          googleService.googleApiClientReady(
+            "PlaylistItems",
+            uploadsId,
+            50
+          ).then(function (data) {
+
+
+              for (var i = 0; i < $scope.collectionsResult[arg2].length; i++) {
+                if ($scope.collectionsResult[arg2][i].channelId == data.items[0].snippet.channelId) {
+
+                  $scope.collectionsResult[arg2][i].uploads = data;
+
+                  return;
+
+                }
+              }
+            },
+            function (error) {
+              console.log('Failed: ' + error)
+            });
+
+
+        }
+      } else {
+        var uploadsId = "UU" + arg1.substring(2);
+
+        googleService.googleApiClientReady(
+          "PlaylistItems",
+          uploadsId,
+          50
+        ).then(function (data) {
+
+
+            for (var i = 0; i < $scope.subscriptionsResult.length; i++) {
+
+              if ($scope.subscriptionsResult[i].channelId == data.items[0].snippet.channelId) {
+
+                $scope.subscriptionsResult[i].uploads = data;
+
+                return;
+              }
+            }
+          },
+          function (error) {
+            console.log('Failed: ' + error)
+          });
       }
     }
   }
@@ -269,29 +321,32 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         });
     } else if (type == "get-uploads") {
       getPlaylistsItems('subscriptions', channelId)
+    } else if (type == "get-more-uploads") {
+      getPlaylistsItems('get-more-uploads', channelId, collection)
     }
   }
-$scope.makePlaylist=function(collection){
-  getPlaylistsItems("collections",collection)
-  setTimeout(function () {
-    makePlaylist(collection)
-  }, 2000);
-}
-  $scope.iframeList =$sce.trustAsResourceUrl('https://www.youtube.com/embed/');
+  $scope.makePlaylist = function (collection) {
+    getPlaylistsItems("collections", collection)
+    setTimeout(function () {
+      makePlaylist(collection)
+    }, 2000);
+  }
+  $scope.iframeList = $sce.trustAsResourceUrl('https://www.youtube.com/embed/');
+
   function makePlaylist(collection) {
     $scope.iframeList = [];
     var firstVideo;
     for (var i = 0; i < $scope.collectionsResult[collection].length; i++) {
       var items = $scope.collectionsResult[collection][i].uploads.items;
       for (var j = 0; j < items.length; j++) {
-        if (i==0) {
+        if (i == 0) {
           firstVideo = items[j].snippet.resourceId.videoId;
         }
         $scope.iframeList.push(items[j].snippet.resourceId.videoId);
       }
     }
     var length = $scope.iframeList.length;
-    $scope.iframeList =$sce.trustAsResourceUrl( "http://www.youtube.com/v/"+firstVideo.toString()+"?version=3&playlist="+$scope.iframeList.toString());
+    $scope.iframeList = $sce.trustAsResourceUrl("http://www.youtube.com/v/" + firstVideo.toString() + "?version=3&playlist=" + $scope.iframeList.toString());
 
 
   }

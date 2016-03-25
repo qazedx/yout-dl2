@@ -2,13 +2,15 @@ angular.module('youtApp')
   .service('googleService', ['$http', '$q', function ($http, $q) {
 
 
-    this.googleApiClientReady = function (type, q) {
+    this.googleApiClientReady = function (type, q, maxResults) {
       var deferred = $q.defer();
-      maxResults = 3;
+      if (maxResults == undefined) {
+        maxResults = 3;
+      }
       gapi.client.setApiKey('AIzaSyDz-n5ZL3bbWXP0eHdUWOoPFCrRlbKxluk');
       gapi.client.load('youtube', 'v3', function () {
         if (type == "search") {
-        //  console.log(q);
+          //  console.log(q);
           var request = gapi.client.youtube.search.list({
             q: q,
             maxResults: maxResults,
@@ -20,18 +22,18 @@ angular.module('youtApp')
             part: 'snippet,contentDetails',
             type: 'channel',
             mine: true,
-            pageToken:q,
+            pageToken: q,
             maxResults: 5
           });
-        }else if (type == "Paylists") {
-        //  console.log(q);
+        } else if (type == "Paylists") {
+          //  console.log(q);
           var request = gapi.client.youtube.playlists.list({
             part: 'snippet,contentDetails',
             channelId: q,
             maxResults: 3
           });
-        }else if (type == "Channels") {
-        //  console.log(q);
+        } else if (type == "Channels") {
+          //  console.log(q);
           var request = gapi.client.youtube.channels.list({
             part: 'contentDetails',
             id: q,
@@ -42,7 +44,7 @@ angular.module('youtApp')
           var request = gapi.client.youtube.playlistItems.list({
             part: 'snippet,contentDetails',
             playlistId: q,
-            maxResults: 4
+            maxResults: maxResults
           });
         } else {
           console.log("unknown type");
@@ -50,7 +52,7 @@ angular.module('youtApp')
         }
         request.execute(function (response) {
           deferred.resolve(response.result);
-        //  console.log(response.result);
+          //  console.log(response.result);
         });
       });
       return deferred.promise;
