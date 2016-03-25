@@ -274,7 +274,34 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
     getCollections();
 
   }
-
+  $scope.newCollection = function (collectionName) {
+    data = {
+      type: "add-new-collection",
+      title: collectionName
+    }
+    $http.post('/data', JSON.stringify(data)).then(
+      function (response) {
+        console.log("successful post");
+        getCollections();
+      },
+      function () {
+        console.log("error post");
+      });
+  }
+  $scope.removeCollection = function (collectionName) {
+    data = {
+      type: "remove-collection",
+      title: collectionName
+    }
+    $http.post('/data', JSON.stringify(data)).then(
+      function (response) {
+        console.log("successful post");
+        getCollections();
+      },
+      function () {
+        console.log("error post");
+      });
+  }
   $scope.collection = function (type, title, channelId, collection) {
 
     if (type == 'add') {

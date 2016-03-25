@@ -35,7 +35,7 @@ function write2file(data) {
 
 function readFileSync(file) {
   var obj = JSON.parse(fs.readFileSync(file, 'utf8'));
-  console.log(obj);
+//  console.log(obj);
   return obj;
 }
 
@@ -65,12 +65,19 @@ app.post('/data', function (request, response) {
 
       console.log("fullBody");
       for (var i = 0; i < obj.collections[fullBody.collection].length; i++) {
-        console.log(obj.collections[fullBody.collection][i].channelId+ " "+ fullBody.channelId);
+
         if (obj.collections[fullBody.collection][i].channelId == fullBody.channelId) {
           obj.collections[fullBody.collection].splice(i, 1);
 
         }
       }
+    } else if (fullBody.type == "add-new-collection") {
+        obj.collections[fullBody.title] = [];
+    }else if (fullBody.type == "remove-collection") {
+    delete obj.collections[fullBody.title];
+
+    } else {
+      console.log("unknown request");
     }
     write2file(obj);
   });
