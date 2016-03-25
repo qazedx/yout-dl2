@@ -159,8 +159,6 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
       }
     } else if (type == "myplaylists") {
-console.log("ll");
-console.log($scope.subscriptionsResult.myplaylists);
       for (var i = 0; i < $scope.subscriptionsResult.myplaylists.items.length; i++) {
         var uploadsId = $scope.subscriptionsResult.myplaylists.items[i].id;
 
