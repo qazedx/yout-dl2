@@ -105,27 +105,27 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   function getPlaylistsItems(type, arg1) {
     if (type == "subscriptions") {
 
-        var uploadsId = "UU" + arg1.substring(2);
+      var uploadsId = "UU" + arg1.substring(2);
 
-        googleService.googleApiClientReady(
-          "PlaylistItems",
-          uploadsId
-        ).then(function (data) {
+      googleService.googleApiClientReady(
+        "PlaylistItems",
+        uploadsId
+      ).then(function (data) {
 
 
-            for (var i = 0; i < $scope.subscriptionsResult.length; i++) {
+          for (var i = 0; i < $scope.subscriptionsResult.length; i++) {
 
-              if ($scope.subscriptionsResult[i].channelId == data.items[0].snippet.channelId) {
+            if ($scope.subscriptionsResult[i].channelId == data.items[0].snippet.channelId) {
 
-                $scope.subscriptionsResult[i].uploads = data;
+              $scope.subscriptionsResult[i].uploads = data;
 
-                return;
-              }
+              return;
             }
-          },
-          function (error) {
-            console.log('Failed: ' + error)
-          });
+          }
+        },
+        function (error) {
+          console.log('Failed: ' + error)
+        });
 
     } else if (type == "collections") {
 
@@ -189,6 +189,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         console.log("error post");
       });
   }
+
   function refreshSubscriptions() {
     $http.get('/data').then(
       function (response) {
@@ -211,6 +212,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   $scope.logResult = function () {
     console.log($scope.subscriptionsResult);
     console.log($scope.collectionsResult);
+    console.log($scope.iframeList);
   }
   $scope.refreshUploads = function () {
     getPlaylistsItems();
@@ -220,6 +222,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
     getCollections();
 
   }
+
   $scope.collection = function (type, title, channelId, collection) {
 
     if (type == 'add') {
@@ -232,18 +235,18 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         channelId: "UC" + channelId,
         uploadsId: "UU" + channelId
       }
-console.log(data);
+      console.log(data);
       var config = "";
 
       $http.post('/data', JSON.stringify(data)).then(
         function (response) {
           console.log("successful post");
-         getCollections();
+          getCollections();
         },
         function () {
           console.log("error post");
         });
-    }else if (type == 'remove') {
+    } else if (type == 'remove') {
 
       channelId = channelId.substring(2);
       data = {
@@ -253,13 +256,13 @@ console.log(data);
         channelId: "UC" + channelId,
         uploadsId: "UU" + channelId
       }
-console.log(data);
+      console.log(data);
       var config = "";
 
       $http.post('/data', JSON.stringify(data)).then(
         function (response) {
           console.log("successful post");
-         getCollections();
+          getCollections();
         },
         function () {
           console.log("error post");
@@ -268,7 +271,34 @@ console.log(data);
       getPlaylistsItems('subscriptions', channelId)
     }
   }
+$scope.makePlaylist=function(collection){
+  getPlaylistsItems("collections",collection)
+  setTimeout(function () {
+    makePlaylist(collection)
+  }, 2000);
+}
+  $scope.iframeList =$sce.trustAsResourceUrl('https://www.youtube.com/embed/');
+  function makePlaylist(collection) {
+    $scope.iframeList = [];
+    var firstVideo;
+    console.log("ll" +collection);
+    for (var i = 0; i < $scope.collectionsResult[collection].length; i++) {
+      console.log($scope.collectionsResult[collection][i].uploads.items);
+      var items = $scope.collectionsResult[collection][i].uploads.items;
+      for (var i = 0; i < items.length; i++) {
+        if (i==0) {
+          firstVideo = items[i].snippet.resourceId.videoId;
+          console.log(firstVideo);
+        }
+        $scope.iframeList.push(items[i].snippet.resourceId.videoId);
+      }
+    }
+    var length = $scope.iframeList.length;
+    $scope.iframeList =$sce.trustAsResourceUrl( "http://www.youtube.com/v/"+firstVideo.toString()+"?version=3&playlist="+$scope.iframeList.toString());
 
+
+    console.log($scope.iframeList);
+  }
 
   function getChannels() {
     var data = {};

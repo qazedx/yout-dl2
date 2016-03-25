@@ -28,20 +28,30 @@ angular.module('youtApp')
 
       }
     };
-  })  .directive('collections', function () {
-      return {
-        restrict: 'EA',
-        templateUrl: 'views/collections.html',
-        replace: false,
-        link: function ($scope, element, attr) {
+  }).directive('collections', function () {
+    return {
+      restrict: 'EA',
+      templateUrl: 'views/collections.html',
+      replace: false,
+      link: function ($scope, element, attr) {
 
-        }
-      };
-    })
+      }
+    };
+  })
   .directive('subscriptionslist', function () {
     return {
       restrict: 'EA',
       templateUrl: 'views/subscriptionslist.html',
+      replace: false,
+      link: function ($scope, element, attr) {
+
+      }
+    };
+  })
+  .directive('liveplaylist', function () {
+    return {
+      restrict: 'EA',
+      templateUrl: 'views/liveplaylist.html',
       replace: false,
       link: function ($scope, element, attr) {
 

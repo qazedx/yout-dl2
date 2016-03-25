@@ -16,7 +16,12 @@
   <div class="collections-wrapper" ng-repeat="(key, value) in collectionsResult">
 
     <h4>{{key}}</h4>
-    <button type="button" name="button" ng-click="refreshUploadsCollection(key)" class="btn btn-default glyphicon glyphicon-refresh pull-right"></button>
+    <div class="controls">
+    <button type="button" name="button" ng-click="refreshUploadsCollection(key)" class="btn btn-default glyphicon glyphicon-refresh pull-right"></button><button type="button" name="button" ng-click="makePlaylist(key)" class="btn btn-default  pull-right">Playlist</button>
+
+  </div><div class="clearfix">
+
+  </div>
     <uib-accordion close-others="oneAtATime" class="subscriptionslist">
       <uib-accordion-group ng-repeat="item in collectionsResult[key]">
         <uib-accordion-heading>
