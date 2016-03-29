@@ -8,15 +8,20 @@ app
     data = readFileSync('data.json')
     res.send(data);
   })
+
+
+
+
+
+  
   .get('/', function (req, res) {
     res.sendFile('public/main.html', {
       "root": "."
     })
   })
-  app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
-console.log("listening on " + port);
+  .listen(app.get('port'), function () {
+    console.log('Node app is running on port', app.get('port'));
+  });
 // read files
 var ytdl = require('ytdl-core');
 var path = require('path')
@@ -38,7 +43,7 @@ function write2file(data) {
 
 function readFileSync(file) {
   var obj = JSON.parse(fs.readFileSync(file, 'utf8'));
-//  console.log(obj);
+  //  console.log(obj);
   return obj;
 }
 
@@ -75,9 +80,9 @@ app.post('/data', function (request, response) {
         }
       }
     } else if (fullBody.type == "add-new-collection") {
-        obj.collections[fullBody.title] = [];
-    }else if (fullBody.type == "remove-collection") {
-    delete obj.collections[fullBody.title];
+      obj.collections[fullBody.title] = [];
+    } else if (fullBody.type == "remove-collection") {
+      delete obj.collections[fullBody.title];
 
     } else {
       console.log("unknown request");
