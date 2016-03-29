@@ -36,9 +36,6 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       getCollections();
       refreshSubscriptions();
       getChannelPlaylists("mine");
-      setTimeout(function () {
-
-      }, 2000);
 
     }, 1000)
     // init functions End

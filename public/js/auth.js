@@ -53,6 +53,6 @@ function handleAuthResult(authResult) {
 // https://developers.google.com/api-client-library/javascript/dev/dev_jscript#loading-the-client-library-and-the-api
 function loadAPIClientInterfaces() {
   gapi.client.load('youtube', 'v3', function() {
-    handleAPILoaded();
+  //  handleAPILoaded();
   });
 }
