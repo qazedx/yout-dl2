@@ -1,19 +1,12 @@
 var express = require('express'),
   app = express();
-var port = 3000;
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 5000));
 app
   .use(express.static('./public'))
   .get('/data', function (req, res) {
     data = readFileSync('data.json')
     res.send(data);
   })
-
-
-
-
-
-  
   .get('/', function (req, res) {
     res.sendFile('public/main.html', {
       "root": "."
