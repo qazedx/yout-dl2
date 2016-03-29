@@ -1,6 +1,7 @@
 var express = require('express'),
   app = express();
 var port = 3000;
+app.set('port', (process.env.PORT || 3000));
 app
   .use(express.static('./public'))
   .get('/data', function (req, res) {
@@ -11,7 +12,10 @@ app
     res.sendFile('public/main.html', {
       "root": "."
     })
-  }).listen(3000);
+  })
+  app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
 console.log("listening on " + port);
 // read files
 var ytdl = require('ytdl-core');
