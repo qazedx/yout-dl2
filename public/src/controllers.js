@@ -144,11 +144,15 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
               if ($scope.collectionsResult[arg1][i].channelId == data.items[0].snippet.channelId) {
 
                 $scope.collectionsResult[arg1][i].uploads = data;
-
+                if ($scope.makePlaylistCollection !== undefined) {
+                  makePlaylist($scope.makePlaylistCollection);
+                  $scope.makePlaylistCollection = undefined;
+                }
                 return;
 
               }
             }
+
           },
           function (error) {
             console.log('Failed: ' + error)
@@ -239,7 +243,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       ).then(function (data) {
 
           $scope.subscriptionsResult.myplaylists = data;
-getPlaylistsItems("myplaylists");
+          getPlaylistsItems("myplaylists");
         },
         function (error) {
           console.log('Failed: ' + error)
@@ -389,11 +393,14 @@ getPlaylistsItems("myplaylists");
       getPlaylistsItems('get-more-uploads', channelId, collection)
     }
   }
+  $scope.iframeListSet = false;
   $scope.makePlaylist = function (collection) {
     getPlaylistsItems("collections", collection)
-    setTimeout(function () {
-      makePlaylist(collection)
-    }, 2000);
+      // setTimeout(function () {
+      //   makePlaylist(collection)
+      // }, 2000);
+    $scope.makePlaylistCollection = collection;
+    $scope.iframeListSet = true;
   }
   $scope.iframeList = $sce.trustAsResourceUrl('https://www.youtube.com/embed/');
 
