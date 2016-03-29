@@ -10,8 +10,7 @@ app
   .get('/', function (req, res) {
     res.sendFile('public/main.html', {
       "root": "."
-    });
-
+    })
   }).listen(port);
 console.log("listening on " + port);
 // read files
