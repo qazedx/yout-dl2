@@ -11,7 +11,7 @@ app
     res.sendFile('public/main.html', {
       "root": "."
     })
-  }).listen(port);
+  }).listen(3000);
 console.log("listening on " + port);
 // read files
 var ytdl = require('ytdl-core');
