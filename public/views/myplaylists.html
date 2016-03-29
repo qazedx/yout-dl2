@@ -2,13 +2,13 @@
   <button type="button" class="btn btn-default pull-right" ng-click="getSubscriptions()" name="button">
     Refresh my playlists
   </button><div class="clearfix"></div>
-  <input class="form-control" type="search" ng-model="q" placeholder="Filter playlists" />
+  <input class="form-control" type="search" ng-model="qmp" placeholder="Filter playlists" />
   <div class="clearfix"></div>
 </div>
 <div class="">
   <!-- {{item.snippet.title}} -->
   <uib-accordion close-others="oneAtATime" class="subscriptionslist">
-    <uib-accordion-group ng-repeat="item in subscriptionsResult.myplaylists.items| filter:q as results">
+    <uib-accordion-group ng-repeat="item in subscriptionsResult.myplaylists.items| filter:qmp as results">
 
       <uib-accordion-heading>
 
