@@ -38,7 +38,7 @@ module.exports = function(model, images, oauth2) {
   router.get('/', function list(req, res, next) {
     model.list(10, req.query.pageToken, function (err, entities, cursor) {
       if (err) { return next(err); }
-      res.render('books/list.jade', {
+      res.send({
         books: entities,
         nextPageToken: cursor
       });

@@ -84,7 +84,7 @@ app
   var model = require('./app/model')(config);
 
   // app
-  app.use('/app', require('./app/crud')(model, images, oauth2));
+//  app.use('/app', require('./app/crud')(model, images, oauth2));
   app.use('/api/app', require('./app/api')(model));
 
 
