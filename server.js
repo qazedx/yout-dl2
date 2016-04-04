@@ -1,3 +1,8 @@
+
+var path = require('path');
+var session = require('cookie-session');
+var config = require('./config')();
+
 var express = require('express'),
   app = express();
 app.set('port', (process.env.PORT || 5000));
@@ -85,3 +90,65 @@ app.post('/data', function (request, response) {
   // write2file(request);
 
 });
+
+
+
+
+
+app.disable('etag');
+app.set('trust proxy', true);
+
+// Configure the session and session storage.
+// MemoryStore isn't viable in a multi-server configuration, so we
+// use encrypted cookies. Redis or Memcache is a great option for
+// more secure sessions, if desired.
+// [START session]
+app.use(session({
+  secret: config.secret,
+  signed: true
+}));
+// [END session]
+
+// OAuth2
+var oauth2 = require('./lib/oauth2')(config.oauth2);
+app.use(oauth2.router);
+
+// Setup modules and dependencies
+var images = require('./lib/images')(config.gcloud, config.cloudStorageBucket);
+var model = require('./app/model')(config);
+
+// app
+app.use('/app', require('./app/crud')(model, images, oauth2));
+app.use('/api/app', require('./app/api')(model));
+
+// Redirect root to /app
+
+// app.get('/', function (req, res) {
+//   res.redirect('/');
+// });
+
+// Basic 404 handler
+app.use(function (req, res) {
+  res.status(404).send('Not Found');
+});
+
+// Basic error handler
+app.use(function (err, req, res, next) {
+  /* jshint unused:false */
+  console.error(err);
+  // If our routes specified a specific response, then send that. Otherwise,
+  // send a generic message so as not to leak anything.
+  res.status(500).send(err.response || 'Something broke!');
+});
+
+if (module === require.main) {
+  // Start the server
+  var server = app.listen(config.port, function () {
+    var host = server.address().address;
+    var port = server.address().port;
+
+    console.log('App listening at http://%s:%s', host, port);
+  });
+}
+
+module.exports = app;
