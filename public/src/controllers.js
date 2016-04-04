@@ -63,7 +63,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
           var config = "";
 
-          $http.post('/data', JSON.stringify(data)).then(
+          $http.post('/data',angular.toJson(data)).then(
             function (response) {
               console.log("successful post");
             },
