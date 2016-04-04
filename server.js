@@ -17,6 +17,50 @@ app
       "root": "."
     })
   });
+  //post
+
+  app.post('/data', function (request, response) {
+    console.log("post");
+    var fullBody = '';
+    request.on('data', function (chunk) {
+      // append the current chunk of data to the fullBody variable
+      fullBody += chunk.toString();
+      fullBody = JSON.parse(fullBody)
+      response.send("got");
+      console.log(fullBody);
+      var obj = readFileSync('data.json');
+      if (fullBody.type == "subsctiptions-list") {
+        obj.subscriptions = fullBody.list
+      } else if (fullBody.type == "add") {
+        data = {
+          title: fullBody.title,
+          channelId: fullBody.channelId,
+          playlistId: fullBody.uploadsId
+        }
+        console.log(fullBody);
+        obj.collections[fullBody.collection].push(data);
+      } else if (fullBody.type == "remove") {
+
+        console.log("fullBody");
+        for (var i = 0; i < obj.collections[fullBody.collection].length; i++) {
+
+          if (obj.collections[fullBody.collection][i].channelId == fullBody.channelId) {
+            obj.collections[fullBody.collection].splice(i, 1);
+
+          }
+        }
+      } else if (fullBody.type == "add-new-collection") {
+        obj.collections[fullBody.title] = [];
+      } else if (fullBody.type == "remove-collection") {
+        delete obj.collections[fullBody.title];
+
+      } else {
+        console.log("unknown request");
+      }
+      write2file(obj);
+    });
+    // write2file(request);
+  });
   app.disable('etag');
   app.set('trust proxy', true);
 
@@ -68,51 +112,7 @@ app
     });
   }
 
-  //post
 
-  app.post('/data', function (request, response) {
-    console.log("post");
-    var fullBody = '';
-    request.on('data', function (chunk) {
-      // append the current chunk of data to the fullBody variable
-      fullBody += chunk.toString();
-      fullBody = JSON.parse(fullBody)
-      response.send("got");
-      console.log(fullBody);
-      var obj = readFileSync('data.json');
-      if (fullBody.type == "subsctiptions-list") {
-        obj.subscriptions = fullBody.list
-      } else if (fullBody.type == "add") {
-        data = {
-          title: fullBody.title,
-          channelId: fullBody.channelId,
-          playlistId: fullBody.uploadsId
-        }
-        console.log(fullBody);
-        obj.collections[fullBody.collection].push(data);
-      } else if (fullBody.type == "remove") {
-
-        console.log("fullBody");
-        for (var i = 0; i < obj.collections[fullBody.collection].length; i++) {
-
-          if (obj.collections[fullBody.collection][i].channelId == fullBody.channelId) {
-            obj.collections[fullBody.collection].splice(i, 1);
-
-          }
-        }
-      } else if (fullBody.type == "add-new-collection") {
-        obj.collections[fullBody.title] = [];
-      } else if (fullBody.type == "remove-collection") {
-        delete obj.collections[fullBody.title];
-
-      } else {
-        console.log("unknown request");
-      }
-      write2file(obj);
-    });
-    // write2file(request);
-
-  });
 // read files
 var ytdl = require('ytdl-core');
 var bodyParser = require('body-parser')
