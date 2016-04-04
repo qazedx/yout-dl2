@@ -1,0 +1,1 @@
+App made with node and angular to manage youtube  subscriptions.
