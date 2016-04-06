@@ -48,7 +48,7 @@ app
             obj.collections[fullBody.collection].splice(i, 1);
 
           }
-        }
+        } 
       } else if (fullBody.type == "add-new-collection") {
         obj.collections[fullBody.title] = [];
       } else if (fullBody.type == "remove-collection") {

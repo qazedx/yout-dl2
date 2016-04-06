@@ -28,7 +28,7 @@ module.exports = function (model) {
    *
    * Retrieve a page of books (up to ten at a time).
    */
-  router.get('/', function list(req, res, next) {
+  router.get('/yout', function list(req, res, next) {
     model.list(10, req.query.pageToken, function (err, entities, cursor) {
       if (err) { return next(err); }
       res.json({
@@ -43,7 +43,7 @@ module.exports = function (model) {
    *
    * Create a new book.
    */
-  router.post('/', function insert(req, res, next) {
+  router.post('/yout', function insert(req, res, next) {
     model.create(req.body, function (err, entity) {
       if (err) { return next(err); }
       res.json(entity);
@@ -55,7 +55,7 @@ module.exports = function (model) {
    *
    * Retrieve a book.
    */
-  router.get('/:book', function get(req, res, next) {
+  router.get('/:yout', function get(req, res, next) {
     model.read(req.params.book, function (err, entity) {
       if (err) { return next(err); }
       res.json(entity);
@@ -67,7 +67,7 @@ module.exports = function (model) {
    *
    * Update a book.
    */
-  router.put('/:book', function update(req, res, next) {
+  router.put('/:yout', function update(req, res, next) {
     model.update(req.params.book, req.body, function (err, entity) {
       if (err) { return next(err); }
       res.json(entity);
@@ -79,7 +79,7 @@ module.exports = function (model) {
    *
    * Delete a book.
    */
-  router.delete('/:book', function _delete(req, res, next) {
+  router.delete('/:yout', function _delete(req, res, next) {
     model.delete(req.params.book, function (err) {
       if (err) { return next(err); }
       res.status(200).send('OK');

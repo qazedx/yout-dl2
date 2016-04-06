@@ -30,6 +30,9 @@
 
   },
   "scripts": {
+    "start": "node server.js",
+    "monitor": "nodemon server.js",
+    "deploy": "gcloud preview app deploy app.yaml",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "qazedx",
