@@ -21,3 +21,5 @@ tags
 /bower_components/
 /public/vid/
 /data.json
+/config.js
+/app.yaml
