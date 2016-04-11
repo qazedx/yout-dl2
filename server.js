@@ -35,6 +35,7 @@ app
     if (req.session.profile) {
 
       if (req.session.profile.id ==config.cust.userId) {
+
         console.log(session.profile);
         res.sendFile('public/main.html', {
           "root": "."
