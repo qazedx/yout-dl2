@@ -31,9 +31,10 @@ app
     res.send(data);
   })
   .get('/', function (req, res) {
-    if (session.profile) {
+  console.log(req.session.profile);
+    if (req.session.profile) {
 
-      if (session.profile.profile.id) {
+      if (req.session.profile.id =='113197882266711723414') {
         console.log(session.profile);
         res.sendFile('public/main.html', {
           "root": "."
