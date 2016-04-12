@@ -71,7 +71,7 @@ module.exports = function (config) {
   }
 
   // [START listby]
-  function listBy(userid, limit, token, cb) {
+  function listBy(limit, userid, token, cb) {
     token = token ? parseInt(token, 10) : 0;
     if (isNaN(token)) {
       return cb(new Error('invalid token'));

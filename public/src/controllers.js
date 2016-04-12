@@ -271,7 +271,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   }
 
   function getCollections() {
-    $http.get('/api/yout').then(
+    $http.get('/api/collections').then(
       function (response) {
 console.log(response.data);
         $scope.collectionsResult = response.data.collections;
@@ -317,7 +317,7 @@ console.log(response.data);
   }
   $scope.newCollection = function (collectionName) {
     data = {
-      type: "add-new-collection",
+      type: "collection",
       title: collectionName
     }
     $http.post('/api/yout', JSON.stringify(data)).then(

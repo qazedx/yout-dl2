@@ -28,15 +28,25 @@ module.exports = function (model) {
    *
    * Retrieve a page of books (up to ten at a time).
    */
-  router.get('/yout', function list(req, res, next) {
-    model.list(10, req.query.pageToken, function (err, entities, cursor) {
-      if (err) { return next(err); }
-      res.json({
-        items: entities,
-        nextPageToken: cursor
-      });
-    });
-  });
+   router.get('/yout', function list(req, res, next) {
+     model.list(10, req.query.pageToken, function (err, entities, cursor) {
+       if (err) { return next(err); }
+       res.json({
+         items: entities,
+         nextPageToken: cursor
+       });
+     });
+   });
+   router.get('/collections', function list(req, res, next) {
+     console.log(req.session.profile.id +req.query.pageToken);
+     model.listBy(50, req.session.profile.id,req.query.pageToken, function (err, entities, cursor) {
+       if (err) { return next(err); }
+       res.json({
+         items: entities,
+         nextPageToken: cursor
+       });
+     });
+   });
 
   /**
    * POST /api/books
@@ -44,7 +54,7 @@ module.exports = function (model) {
    * Create a new book.
    */
   router.post('/yout', function insert(req, res, next) {
-    req.body.userId = req.session.profile.id;
+    req.body.createdById = req.session.profile.id;
     model.create(req.body, function (err, entity) {
       if (err) { return next(err); }
       res.json(entity);
