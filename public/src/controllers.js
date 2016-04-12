@@ -34,7 +34,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   // init functions
   setTimeout(function () {
       getCollections();
-      refreshSubscriptions();
+      // refreshSubscriptions();
       getChannelPlaylists("mine");
 
     }, 1000)
@@ -43,7 +43,9 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   $scope.subscriptionsResult = [];
 
   function getSubscriptions() {
-
+if ($scope.subscriptionsResult ==undefined) {
+  $scope.subscriptionsResult = [];
+}
     googleService.googleApiClientReady("Subscriptions", $scope.nextPageToken).then(function (data) {
 
         $scope.nextPageToken = data.nextPageToken;
@@ -57,10 +59,10 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
         if ($scope.nextPageToken == undefined) {
           data = {
-            type: "subsctiptions-list",
+            type: "subsctiptions",
             list: $scope.subscriptionsResult
           }
-
+console.log(data);
           var config = "";
 
           $http.post('/api/yout', angular.toJson(data)).then(
@@ -277,10 +279,13 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
           $scope.collectionsResult=[];
         for (var i = 0; i < response.data.items.length; i++) {
           if (response.data.items[i].type == "collection") {
-            $scope.collectionsResult[i] = response.data.items[i]
+            $scope.collectionsResult[i] = response.data.items[i];
+          }else if (response.data.items[i].type == "subsctiptions") {
+            console.log(response.data.items[i]);
+            $scope.subscriptionsResult = response.data.items[i].list;
           }
         }
-        console.log($scope.collectionsResult);
+
         // $scope.collectionsResult = response.data.collections;
 
         console.log("successful get");

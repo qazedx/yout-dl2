@@ -23,7 +23,7 @@ angular.module('youtApp')
             type: 'channel',
             mine: true,
             pageToken: q,
-            maxResults: 5
+            maxResults: 50
           });
         } else if (type == "Paylists") {
           //  console.log(q);
