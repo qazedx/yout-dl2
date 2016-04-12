@@ -153,6 +153,7 @@ module.exports = function (config) {
     });
   }
 
+
   function _delete(id, cb) {
     getCollection(function (err, collection) {
       if (err) { return cb(err); }

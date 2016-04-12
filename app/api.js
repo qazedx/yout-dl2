@@ -28,25 +28,29 @@ module.exports = function (model) {
    *
    * Retrieve a page of books (up to ten at a time).
    */
-   router.get('/yout', function list(req, res, next) {
-     model.list(10, req.query.pageToken, function (err, entities, cursor) {
-       if (err) { return next(err); }
-       res.json({
-         items: entities,
-         nextPageToken: cursor
-       });
-     });
-   });
-   router.get('/userItems', function list(req, res, next) {
-     console.log(req.session.profile.id +req.query.pageToken);
-     model.listBy(50, req.session.profile.id,req.query.pageToken, function (err, entities, cursor) {
-       if (err) { return next(err); }
-       res.json({
-         items: entities,
-         nextPageToken: cursor
-       });
-     });
-   });
+  router.get('/yout', function list(req, res, next) {
+    model.list(10, req.query.pageToken, function (err, entities, cursor) {
+      if (err) {
+        return next(err);
+      }
+      res.json({
+        items: entities,
+        nextPageToken: cursor
+      });
+    });
+  });
+  router.get('/userItems', function list(req, res, next) {
+    console.log(req.session.profile.id + req.query.pageToken);
+    model.listBy(50, req.session.profile.id, req.query.pageToken, function (err, entities, cursor) {
+      if (err) {
+        return next(err);
+      }
+      res.json({
+        items: entities,
+        nextPageToken: cursor
+      });
+    });
+  });
 
   /**
    * POST /api/books
@@ -56,7 +60,9 @@ module.exports = function (model) {
   router.post('/yout', function insert(req, res, next) {
     req.body.createdById = req.session.profile.id;
     model.create(req.body, function (err, entity) {
-      if (err) { return next(err); }
+      if (err) {
+        return next(err);
+      }
       res.json(entity);
     });
   });
@@ -68,7 +74,9 @@ module.exports = function (model) {
    */
   router.get('/:yout', function get(req, res, next) {
     model.read(req.params.book, function (err, entity) {
-      if (err) { return next(err); }
+      if (err) {
+        return next(err);
+      }
       res.json(entity);
     });
   });
@@ -79,10 +87,37 @@ module.exports = function (model) {
    * Update a book.
    */
   router.put('/:collection', function update(req, res, next) {
-    model.update(req.params.collection, req.body, function (err, entity) {
-      if (err) { return next(err); }
-      res.json(entity);
-    });
+    if (req.body.type == "add") {
+      console.log("ll");
+
+
+      model.read(req.params.collection, function (err, entity) {
+        if (err) {
+          return next(err);
+        }
+
+        if (entity.items == undefined) {
+          entity.items=[];
+        }
+        entity.items.push(req.body);
+      model.update(req.params.collection,entity, function (err, entity) {
+        if (err) {
+          return next(err);
+        }
+        res.json(entity);
+      });
+      });
+
+
+    } else {
+      model.update(req.params.collection, req.body, function (err, entity) {
+        if (err) {
+          return next(err);
+        }
+        res.json(entity);
+      });
+
+    }
   });
 
   /**
@@ -93,7 +128,9 @@ module.exports = function (model) {
   router.delete('/:collection', function _delete(req, res, next) {
     console.log(req.params);
     model.delete(req.params.collection, function (err) {
-      if (err) { return next(err); }
+      if (err) {
+        return next(err);
+      }
       res.status(200).send('OK');
     });
   });

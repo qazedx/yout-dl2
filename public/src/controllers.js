@@ -316,7 +316,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   };
   $scope.logResult = function () {
     console.log($scope.subscriptionsResult);
-    console.log($scope.collectionsResult);
+    console.log($scope.collectionsResult[0].items);
     console.log($scope.iframeList);
   }
   $scope.refreshUploads = function () {
