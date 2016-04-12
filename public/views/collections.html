@@ -28,19 +28,19 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 col-sm-6 col-lg-4 collections-wrapper" ng-click="refreshUploadsCollection(key)" ng-repeat="(key, value) in collectionsResult">
+  <div class="col-xs-12 col-sm-6 col-lg-4 collections-wrapper" ng-click="refreshUploadsCollection(key)" ng-repeat="item in collectionsResult">
 
-    <h4><strong>{{key}}</strong></h4>
+    <h4><strong>{{item.title}}</strong></h4>
     <div class="controls">
-      <button type="button" name="button" ng-click="refreshUploadsCollection(key)" class="btn btn-default glyphicon glyphicon-refresh pull-right"></button>
-      <button type="button" name="button" ng-click="makePlaylist(key)" class="btn btn-default  pull-right">Playlist</button>
+      <button type="button" name="button" ng-click="refreshUploadsCollection(item.title)" class="btn btn-default glyphicon glyphicon-refresh pull-right"></button>
+      <button type="button" name="button" ng-click="makePlaylist(item.title)" class="btn btn-default  pull-right">Playlist</button>
 
     </div>
     <div class="clearfix">
 
     </div>
     <uib-accordion close-others="oneAtATime" class="subscriptionslist">
-      <uib-accordion-group ng-repeat="item in collectionsResult[key]">
+      <uib-accordion-group ng-repeat="item in collectionsResult[item.title]">
         <uib-accordion-heading>
           {{item.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </uib-accordion-heading>
