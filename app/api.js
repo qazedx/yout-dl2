@@ -97,18 +97,37 @@ module.exports = function (model) {
         }
 
         if (entity.items == undefined) {
-          entity.items=[];
+          entity.items = [];
         }
         entity.items.push(req.body);
-      model.update(req.params.collection,entity, function (err, entity) {
+        model.update(req.params.collection, entity, function (err, entity) {
+          if (err) {
+            return next(err);
+          }
+          res.json(entity);
+        });
+      });
+
+
+    } else if (req.body.type == "remove") {
+      model.read(req.params.collection, function (err, entity) {
         if (err) {
           return next(err);
         }
-        res.json(entity);
-      });
-      });
 
+        for (var i = 0; i < entity.items.length; i++) {
 
+          if (entity.items[i].channelId == req.body.channelId) {
+         entity.items.splice(i, 1);
+          }
+        }
+        model.update(req.params.collection, entity, function (err, entity) {
+          if (err) {
+            return next(err);
+          }
+          res.json(entity);
+        });
+      });
     } else {
       model.update(req.params.collection, req.body, function (err, entity) {
         if (err) {

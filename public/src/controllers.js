@@ -390,7 +390,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       console.log(data);
       var config = "";
 
-      $http.post('/data', JSON.stringify(data)).then(
+      $http.put('/api/'+collection, JSON.stringify(data)).then(
         function (response) {
           console.log("successful post");
           getCollections();
