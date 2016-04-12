@@ -44,6 +44,7 @@ module.exports = function (model) {
    * Create a new book.
    */
   router.post('/yout', function insert(req, res, next) {
+    req.body.userId = req.session.profile.id;
     model.create(req.body, function (err, entity) {
       if (err) { return next(err); }
       res.json(entity);
@@ -80,6 +81,7 @@ module.exports = function (model) {
    * Delete a book.
    */
   router.delete('/:yout', function _delete(req, res, next) {
+    console.log(req.params);
     model.delete(req.params.book, function (err) {
       if (err) { return next(err); }
       res.status(200).send('OK');

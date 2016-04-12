@@ -63,7 +63,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
           var config = "";
 
-          $http.post('/data',angular.toJson(data)).then(
+          $http.post('/api/yout',angular.toJson(data)).then(
             function (response) {
               console.log("successful post");
             },
@@ -271,9 +271,9 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   }
 
   function getCollections() {
-    $http.get('/data').then(
+    $http.get('/api/yout').then(
       function (response) {
-
+console.log(response.data);
         $scope.collectionsResult = response.data.collections;
 
         console.log("successful get");
@@ -284,7 +284,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   }
 
   function refreshSubscriptions() {
-    $http.get('/data').then(
+    $http.get('/api/yout').then(
       function (response) {
 
         $scope.subscriptionsResult = response.data.subscriptions;
@@ -320,7 +320,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       type: "add-new-collection",
       title: collectionName
     }
-    $http.post('/data', JSON.stringify(data)).then(
+    $http.post('/api/yout', JSON.stringify(data)).then(
       function (response) {
         console.log("successful post");
         getCollections();
@@ -331,10 +331,9 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   }
   $scope.removeCollection = function (collectionName) {
     data = {
-      type: "remove-collection",
       title: collectionName
     }
-    $http.post('/data', JSON.stringify(data)).then(
+    $http.delete('/api/'+collectionName ).then(
       function (response) {
         console.log("successful post");
         getCollections();
