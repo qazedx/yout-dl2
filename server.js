@@ -31,12 +31,10 @@ app
     res.send(data);
   })
   .get('/', function (req, res) {
-  console.log(req.session.profile);
     if (req.session.profile) {
 
       if (req.session.profile.id ==config.cust.userId) {
 
-        console.log(session.profile);
         res.sendFile('public/main.html', {
           "root": "."
         })

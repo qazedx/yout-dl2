@@ -70,25 +70,44 @@ module.exports = function (config) {
     });
   }
 
-  // [START listby]
-  function listBy(limit, userid, token, cb) {
-    token = token ? parseInt(token, 10) : 0;
-    if (isNaN(token)) {
-      return cb(new Error('invalid token'));
+    // [START listby]
+    function listBy(limit, userid, token, cb) {
+      token = token ? parseInt(token, 10) : 0;
+      if (isNaN(token)) {
+        return cb(new Error('invalid token'));
+      }
+      getCollection(function (err, collection) {
+        collection.find({createdById: userid})
+          .skip(token)
+          .limit(limit)
+          .toArray(function (err, results) {
+            if (err) { return cb(err); }
+            var hasMore =
+              results.length === limit ? token + results.length : false;
+            cb(null, results.map(fromMongo), hasMore);
+          });
+      });
     }
-    getCollection(function (err, collection) {
-      collection.find({createdById: userid})
-        .skip(token)
-        .limit(limit)
-        .toArray(function (err, results) {
-          if (err) { return cb(err); }
-          var hasMore =
-            results.length === limit ? token + results.length : false;
-          cb(null, results.map(fromMongo), hasMore);
+    // [END listby]
+      // [START listbyitem]
+      function listByitem(limit, userid, item, token, cb) {
+        token = token ? parseInt(token, 10) : 0;
+        if (isNaN(token)) {
+          return cb(new Error('invalid token'));
+        }
+        getCollection(function (err, collection) {
+          collection.find({createdById: userid, type:item})
+            .skip(token)
+            .limit(limit)
+            .toArray(function (err, results) {
+              if (err) { return cb(err); }
+              var hasMore =
+                results.length === limit ? token + results.length : false;
+              cb(null, results.map(fromMongo), hasMore);
+            });
         });
-    });
-  }
-  // [END listby]
+      }
+      // [END listbyitem]
 
   function create(data, cb) {
     getCollection(function (err, collection) {

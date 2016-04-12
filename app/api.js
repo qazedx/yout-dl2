@@ -37,7 +37,7 @@ module.exports = function (model) {
        });
      });
    });
-   router.get('/collections', function list(req, res, next) {
+   router.get('/userItems', function list(req, res, next) {
      console.log(req.session.profile.id +req.query.pageToken);
      model.listBy(50, req.session.profile.id,req.query.pageToken, function (err, entities, cursor) {
        if (err) { return next(err); }

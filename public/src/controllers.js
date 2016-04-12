@@ -63,7 +63,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
           var config = "";
 
-          $http.post('/api/yout',angular.toJson(data)).then(
+          $http.post('/api/yout', angular.toJson(data)).then(
             function (response) {
               console.log("successful post");
             },
@@ -271,10 +271,17 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   }
 
   function getCollections() {
-    $http.get('/api/collections').then(
+    $http.get('/api/userItems').then(
       function (response) {
-console.log(response.data);
-        $scope.collectionsResult = response.data.collections;
+          console.log(response);
+          $scope.collectionsResult=[];
+        for (var i = 0; i < response.data.items.length; i++) {
+          if (response.data.items[i].type == "collection") {
+            $scope.collectionsResult[i] = response.data.items[i]
+          }
+        }
+        console.log($scope.collectionsResult);
+        // $scope.collectionsResult = response.data.collections;
 
         console.log("successful get");
       },
@@ -333,7 +340,7 @@ console.log(response.data);
     data = {
       title: collectionName
     }
-    $http.delete('/api/'+collectionName ).then(
+    $http.delete('/api/' + collectionName).then(
       function (response) {
         console.log("successful post");
         getCollections();
@@ -357,7 +364,7 @@ console.log(response.data);
       console.log(data);
       var config = "";
 
-      $http.post('/data', JSON.stringify(data)).then(
+      $http.put('/api/'+collection, JSON.stringify(data)).then(
         function (response) {
           console.log("successful post");
           getCollections();
