@@ -78,8 +78,8 @@ module.exports = function (model) {
    *
    * Update a book.
    */
-  router.put('/:yout', function update(req, res, next) {
-    model.update(req.params.book, req.body, function (err, entity) {
+  router.put('/:collection', function update(req, res, next) {
+    model.update(req.params.collection, req.body, function (err, entity) {
       if (err) { return next(err); }
       res.json(entity);
     });
@@ -90,9 +90,9 @@ module.exports = function (model) {
    *
    * Delete a book.
    */
-  router.delete('/:yout', function _delete(req, res, next) {
+  router.delete('/:collection', function _delete(req, res, next) {
     console.log(req.params);
-    model.delete(req.params.book, function (err) {
+    model.delete(req.params.collection, function (err) {
       if (err) { return next(err); }
       res.status(200).send('OK');
     });

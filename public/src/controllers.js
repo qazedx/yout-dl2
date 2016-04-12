@@ -34,7 +34,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   // init functions
   setTimeout(function () {
       getCollections();
-      // refreshSubscriptions();
+      refreshSubscriptions();
       getChannelPlaylists("mine");
 
     }, 1000)
@@ -43,9 +43,9 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   $scope.subscriptionsResult = [];
 
   function getSubscriptions() {
-if ($scope.subscriptionsResult ==undefined) {
-  $scope.subscriptionsResult = [];
-}
+    if ($scope.subscriptionsResult == undefined) {
+      $scope.subscriptionsResult = [];
+    }
     googleService.googleApiClientReady("Subscriptions", $scope.nextPageToken).then(function (data) {
 
         $scope.nextPageToken = data.nextPageToken;
@@ -62,7 +62,7 @@ if ($scope.subscriptionsResult ==undefined) {
             type: "subsctiptions",
             list: $scope.subscriptionsResult
           }
-console.log(data);
+          console.log(data);
           var config = "";
 
           $http.post('/api/yout', angular.toJson(data)).then(
@@ -275,14 +275,11 @@ console.log(data);
   function getCollections() {
     $http.get('/api/userItems').then(
       function (response) {
-          console.log(response);
-          $scope.collectionsResult=[];
+        console.log(response);
+        $scope.collectionsResult = [];
         for (var i = 0; i < response.data.items.length; i++) {
           if (response.data.items[i].type == "collection") {
             $scope.collectionsResult[i] = response.data.items[i];
-          }else if (response.data.items[i].type == "subsctiptions") {
-            console.log(response.data.items[i]);
-            $scope.subscriptionsResult = response.data.items[i].list;
           }
         }
 
@@ -296,11 +293,14 @@ console.log(data);
   }
 
   function refreshSubscriptions() {
-    $http.get('/api/yout').then(
+    $http.get('/api/userItems').then(
       function (response) {
-
-        $scope.subscriptionsResult = response.data.subscriptions;
-
+        for (var i = 0; i < response.data.items.length; i++) {
+          if (response.data.items[i].type == "subsctiptions") {
+            console.log(response.data.items[i]);
+            $scope.subscriptionsResult = response.data.items[i].list;
+          }
+        }
         console.log("successful get");
       },
       function () {
@@ -369,7 +369,7 @@ console.log(data);
       console.log(data);
       var config = "";
 
-      $http.put('/api/'+collection, JSON.stringify(data)).then(
+      $http.put('/api/' + collection, JSON.stringify(data)).then(
         function (response) {
           console.log("successful post");
           getCollections();

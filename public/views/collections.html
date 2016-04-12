@@ -10,7 +10,7 @@
 
   <div class="form-group">
     <select class="form-control" name="collection" ng-model="collectionModel.collection">
-      <option value="{{key}}" ng-repeat="(key, value) in collectionsResult">add to: {{key}}</option>
+      <option value="{{item.id}}" ng-repeat="item in collectionsResult">remove: {{item.title}}</option>
     </select>
     <button class="btn btn-default" ng-click="removeCollection(collectionModel.collection)" type="button" name="button"> remove</button>
   </div>
