@@ -5,13 +5,13 @@
   <input class="form-control" type="search" ng-model="q" placeholder="Filter subscriptions" />
   <div class="clearfix"></div>
 </div>
-<div class="">
+<div  class="row">
   <!-- {{item.snippet.title}} -->
-  <uib-accordion close-others="oneAtATime" class="subscriptionslist">
-    <uib-accordion-group ng-repeat="item in subscriptionsResult| filter:q as results">
+  <uib-accordion close-others="oneAtATime" class="subscriptionslist  col-xs-6" ng-repeat="item in subscriptionsResult| filter:q as results">
+    <uib-accordion-group  >
 
       <uib-accordion-heading>
-        <div ng-click="collection('get-uploads', item.title,item.channelId)">
+        <div class="click-wrapper" ng-click="collection('get-uploads', item.title,item.channelId)">
           {{item.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
 
         </div>
@@ -41,7 +41,7 @@
         <div class="video" ng-repeat="videoItem in item.uploads.items">
           <h4 class="btn-block">  {{videoItem.snippet.title}}</h4>
           <a href="https://www.youtube.com/watch?v={{videoItem.contentDetails.videoId}}&list={{item.uploads.items[0].snippet.playlistId}}" target="_blank">
-            <img ng-src="{{videoItem.snippet.thumbnails.high.url}}" alt="" /></a>
+            <img class="img-responsive" ng-src="{{videoItem.snippet.thumbnails.high.url}}" alt="" /></a>
           <div class="description" ng-class="{expanded: showDescription == true, '': showDescription == false}">
             <p>
               {{videoItem.snippet.description}}

@@ -50,8 +50,10 @@ body{
 .subscriptionslist .panel-title a {
   width: 100%;
   display: block;
-  padding: 10px 15px;
   outline: none;
+}
+.subscriptionslist .panel-title a div.click-wrapper{
+  padding: 10px 15px;  
 }
 video .description.expanded {
   max-height: auto;
