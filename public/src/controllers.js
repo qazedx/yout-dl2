@@ -132,20 +132,22 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         });
 
     } else if (type == "collections") {
-
-      for (var i = 0; i < $scope.collectionsResult[arg1].length; i++) {
-        var uploadsId = "UU" + $scope.collectionsResult[arg1][i].channelId.substring(2);
+for (var i = 0; i < $scope.collectionsResult.length; i++) {
+  console.log(arg1 );
+  if ($scope.collectionsResult[i].id == arg1) { console.log("tt");
+      for (var ii = 0; ii < $scope.collectionsResult[i].length; ii++) {
+        var uploadsId = "UU" + $scope.collectionsResult[i][ii].channelId.substring(2);
 
         googleService.googleApiClientReady(
           "PlaylistItems",
           uploadsId
         ).then(function (data) {
 
+console.log(data);
+            for (var il = 0; il < $scope.collectionsResult[ii].length; li++) {
+              if ($scope.collectionsResult[i][il].channelId == data.items[0].snippet.channelId) {
 
-            for (var i = 0; i < $scope.collectionsResult[arg1].length; i++) {
-              if ($scope.collectionsResult[arg1][i].channelId == data.items[0].snippet.channelId) {
-
-                $scope.collectionsResult[arg1][i].uploads = data;
+                $scope.collectionsResult[i][il].uploads = data;
                 if ($scope.makePlaylistCollection !== undefined) {
                   makePlaylist($scope.makePlaylistCollection);
                   $scope.makePlaylistCollection = undefined;
@@ -161,6 +163,9 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
           });
 
       }
+    }
+  }
+
     } else if (type == "myplaylists") {
       for (var i = 0; i < $scope.subscriptionsResult.myplaylists.items.length; i++) {
         var uploadsId = $scope.subscriptionsResult.myplaylists.items[i].id;
@@ -279,7 +284,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         $scope.collectionsResult = [];
         for (var i = 0; i < response.data.items.length; i++) {
           if (response.data.items[i].type == "collection") {
-            $scope.collectionsResult[i] = response.data.items[i];
+            $scope.collectionsResult.push(response.data.items[i]);
           }
         }
 
@@ -316,7 +321,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   };
   $scope.logResult = function () {
     console.log($scope.subscriptionsResult);
-    console.log($scope.collectionsResult[0].items);
+    console.log($scope.collectionsResult);
     console.log($scope.iframeList);
   }
   $scope.refreshUploads = function () {
