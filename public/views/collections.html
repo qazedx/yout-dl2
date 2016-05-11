@@ -28,7 +28,7 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 col-sm-6 col-lg-4 collections-wrapper" ng-click="refreshUploadsCollection(key)" ng-repeat="collectionsResultItem in collectionsResult">
+  <div class="col-xs-12 col-sm-6 col-lg-4 collections-wrapper" ng-click="refreshUploadsCollection(collectionsResultItem.title)" ng-repeat="collectionsResultItem in collectionsResult">
 
     <h4><strong>{{collectionsResultItem.title}}</strong></h4>
     <div class="controls">
@@ -36,9 +36,7 @@
       <button type="button" name="button" ng-click="makePlaylist(collectionsResultItem.title)" class="btn btn-default  pull-right">Playlist</button>
 
     </div>
-    <div class="clearfix">
-
-    </div>
+    <div class="clearfix"></div>
     <uib-accordion close-others="oneAtATime" class="subscriptionslist">
       <uib-accordion-group ng-repeat="item in collectionsResultItem.items">
         <uib-accordion-heading>

@@ -132,34 +132,42 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         });
 
     } else if (type == "collections") {
+      for (var i = 0; i < $scope.collectionsResult.length; i++) {
 
-      for (var i = 0; i < $scope.collectionsResult[arg1].length; i++) {
-        var uploadsId = "UU" + $scope.collectionsResult[arg1][i].channelId.substring(2);
+        if ($scope.collectionsResult[i].title == arg1){
+          for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
 
-        googleService.googleApiClientReady(
-          "PlaylistItems",
-          uploadsId
-        ).then(function (data) {
+            var uploadsId = "UU" + $scope.collectionsResult[i].items[ii].channelId.substring(2);
 
+            googleService.googleApiClientReady(
+              "PlaylistItems",
+              uploadsId
+            ).then(function (data) {
 
-            for (var i = 0; i < $scope.collectionsResult[arg1].length; i++) {
-              if ($scope.collectionsResult[arg1][i].channelId == data.items[0].snippet.channelId) {
+                for (var i = 0; i < $scope.collectionsResult.length; i++) {
+                  for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
+                  if ($scope.collectionsResult[i].items[ii].channelId == data.items[0].snippet.channelId) {
 
-                $scope.collectionsResult[arg1][i].uploads = data;
-                if ($scope.makePlaylistCollection !== undefined) {
-                  makePlaylist($scope.makePlaylistCollection);
-                  $scope.makePlaylistCollection = undefined;
+                    $scope.collectionsResult[i].items[ii].uploads = data;
+                    if ($scope.makePlaylistCollection !== undefined) {
+                      makePlaylist($scope.makePlaylistCollection);
+                      $scope.makePlaylistCollection = undefined;
+                    }
+                    return;
+
+                    }
+                  }
                 }
-                return;
 
-              }
-            }
+              },
+              function (error) {
+                console.log('Failed: ' + error)
+              });
 
-          },
-          function (error) {
-            console.log('Failed: ' + error)
-          });
 
+          }
+
+        }
       }
     } else if (type == "myplaylists") {
       for (var i = 0; i < $scope.subscriptionsResult.myplaylists.items.length; i++) {
@@ -316,7 +324,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   };
   $scope.logResult = function () {
     console.log($scope.subscriptionsResult);
-    console.log($scope.collectionsResult[0].items);
+    console.log($scope.collectionsResult);
     console.log($scope.iframeList);
   }
   $scope.refreshUploads = function () {
