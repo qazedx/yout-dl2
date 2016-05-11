@@ -60,8 +60,12 @@ angular.module('youtApp')
       return deferred.promise;
     };
   }])
-
-  .factory('mongo', function ($q, $http, Contact) {
+  .factory('apiUrl', function ($resource) {
+      return $resource('/api/yout/:id', { id: '@id' }, {
+          'update': { method: 'PUT' }
+      });
+  })
+  .factory('mongo', function ($q, $http, apiUrl) {
       var url = '/options/displayed_fields',
           ignore = ['firstName', 'lastName', 'id', 'userId'],
           allFields = [],
