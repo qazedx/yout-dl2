@@ -1,6 +1,7 @@
 angular.module('youtApp')
   .controller('searchController', searchController)
   .controller('subscriptionsController', subscriptionsController)
+  .controller('AlertController', AlertController)
 
 function searchController($rootScope, $scope, googleService) {
   $scope.searchResults = {
@@ -22,8 +23,19 @@ function searchController($rootScope, $scope, googleService) {
   }
 
 }
+function AlertController ($scope) {
+
+};
 
 function subscriptionsController($window, $rootScope, $scope, $http, $sce, googleService) {
+  $scope.alerts=[];
+    $scope.addAlert = function() {
+      $scope.alerts.push({type: 'success',msg: 'Another alert!'});
+    };
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
   $scope.oneAtATime = true;
 
   $window.initGapi = function () {
@@ -43,7 +55,9 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   $scope.subscriptionsResult = [];
 
   function getSubscriptions() {
-
+    if ($scope.subscriptionsResult == undefined) {
+      $scope.subscriptionsResult = [];
+    }
     googleService.googleApiClientReady("Subscriptions", $scope.nextPageToken).then(function (data) {
 
         $scope.nextPageToken = data.nextPageToken;
@@ -57,13 +71,13 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
         if ($scope.nextPageToken == undefined) {
           data = {
-            type: "subsctiptions-list",
+            type: "subsctiptions",
             list: $scope.subscriptionsResult
           }
-
+          console.log(data);
           var config = "";
 
-          $http.post('/data', JSON.stringify(data)).then(
+          $http.post('/api/yout', angular.toJson(data)).then(
             function (response) {
               console.log("successful post");
             },
@@ -129,37 +143,88 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
           console.log('Failed: ' + error)
         });
 
-    } else if (type == "collections") {
+    // } else if (type == "collections") {
+    //   var collectionfiltered = $scope.collectionsResult.filter(function(obj ) {
+    //     return obj.title == arg1;
+    //   });
+    //   for (var i = 0; i < $scope.collectionsResult.length; i++) {
+    //
+    //     if ($scope.collectionsResult[i].title == arg1){
+    //       for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
+    //
+    //         var uploadsId = "UU" + $scope.collectionsResult[i].items[ii].channelId.substring(2);
+    //
+    //         googleService.googleApiClientReady(
+    //           "PlaylistItems",
+    //           uploadsId
+    //         ).then(function (data) {
+    //
+    //             for (var i = 0; i < $scope.collectionsResult.length; i++) {
+    //               for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
+    //               if ($scope.collectionsResult[i].items[ii].channelId == data.items[0].snippet.channelId) {
+    //
+    //                 $scope.collectionsResult[i].items[ii].uploads = data;
+    //                 if ($scope.makePlaylistCollection !== undefined) {
+    //                   makePlaylist($scope.makePlaylistCollection);
+    //                   $scope.makePlaylistCollection = undefined;
+    //                 }
+    //                 return;
+    //
+    //                 }
+    //               }
+    //             }
+    //
+    //           },
+    //           function (error) {
+    //             console.log('Failed: ' + error)
+    //           });
+    //
+    //
+    //       }
+    //
+    //     }
+    //   }
+    // }
+  } else if (type == "collections") {
+    var collectionfiltered = $scope.collectionsResult.filter(function(obj ) {
+      return obj.title == arg1;
+    });
+        for (var i = 0; i < collectionfiltered[0].items.length; i++) {
 
-      for (var i = 0; i < $scope.collectionsResult[arg1].length; i++) {
-        var uploadsId = "UU" + $scope.collectionsResult[arg1][i].channelId.substring(2);
+          var uploadsId = "UU" + collectionfiltered[0].items[i].channelId.substring(2);
 
-        googleService.googleApiClientReady(
-          "PlaylistItems",
-          uploadsId
-        ).then(function (data) {
+          googleService.googleApiClientReady(
+            "PlaylistItems",
+            uploadsId
+          ).then(function (data) {
 
+ for (var i = 0; i < $scope.collectionsResult.length; i++) {
+                for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
+                if ($scope.collectionsResult[i].items[ii].channelId == data.items[0].snippet.channelId) {
 
-            for (var i = 0; i < $scope.collectionsResult[arg1].length; i++) {
-              if ($scope.collectionsResult[arg1][i].channelId == data.items[0].snippet.channelId) {
+                  $scope.collectionsResult[i].items[ii].uploads = data;
+                  if ($scope.makePlaylistCollection !== undefined) {
+                    makePlaylist($scope.makePlaylistCollection);
+                    $scope.makePlaylistCollection = undefined;
+                  }
+                  return;
 
-                $scope.collectionsResult[arg1][i].uploads = data;
-                if ($scope.makePlaylistCollection !== undefined) {
-                  makePlaylist($scope.makePlaylistCollection);
-                  $scope.makePlaylistCollection = undefined;
-                }
-                return;
+                  }
 
               }
-            }
+             }
 
-          },
-          function (error) {
-            console.log('Failed: ' + error)
-          });
+            },
+            function (error) {
+              console.log('Failed: ' + error)
+            });
 
-      }
-    } else if (type == "myplaylists") {
+
+        }
+
+
+  }
+    else if (type == "myplaylists") {
       for (var i = 0; i < $scope.subscriptionsResult.myplaylists.items.length; i++) {
         var uploadsId = $scope.subscriptionsResult.myplaylists.items[i].id;
 
@@ -271,10 +336,17 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   }
 
   function getCollections() {
-    $http.get('/data').then(
+    $http.get('/api/userItems').then(
       function (response) {
+        console.log(response);
+        $scope.collectionsResult = [];
+        for (var i = 0; i < response.data.items.length; i++) {
+          if (response.data.items[i].type == "collection") {
+            $scope.collectionsResult.push(response.data.items[i]);
+          }
+        }
 
-        $scope.collectionsResult = response.data.collections;
+        // $scope.collectionsResult = response.data.collections;
 
         console.log("successful get");
       },
@@ -284,11 +356,14 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   }
 
   function refreshSubscriptions() {
-    $http.get('/data').then(
+    $http.get('/api/userItems').then(
       function (response) {
-
-        $scope.subscriptionsResult = response.data.subscriptions;
-
+        for (var i = 0; i < response.data.items.length; i++) {
+          if (response.data.items[i].type == "subsctiptions") {
+            console.log(response.data.items[i]);
+            $scope.subscriptionsResult = response.data.items[i].list;
+          }
+        }
         console.log("successful get");
       },
       function () {
@@ -317,10 +392,10 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   }
   $scope.newCollection = function (collectionName) {
     data = {
-      type: "add-new-collection",
+      type: "collection",
       title: collectionName
     }
-    $http.post('/data', JSON.stringify(data)).then(
+    $http.post('/api/yout', JSON.stringify(data)).then(
       function (response) {
         console.log("successful post");
         getCollections();
@@ -331,10 +406,9 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   }
   $scope.removeCollection = function (collectionName) {
     data = {
-      type: "remove-collection",
       title: collectionName
     }
-    $http.post('/data', JSON.stringify(data)).then(
+    $http.delete('/api/' + collectionName).then(
       function (response) {
         console.log("successful post");
         getCollections();
@@ -358,13 +432,15 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       console.log(data);
       var config = "";
 
-      $http.post('/data', JSON.stringify(data)).then(
+      $http.put('/api/' + collection, JSON.stringify(data)).then(
         function (response) {
           console.log("successful post");
+          $scope.alerts.push({type: 'success',msg: 'Successfuly added to collection'});
           getCollections();
         },
         function () {
           console.log("error post");
+          $scope.alerts.push({type: 'danger',msg: 'Could not add to collection'});
         });
     } else if (type == 'remove') {
 
@@ -379,7 +455,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       console.log(data);
       var config = "";
 
-      $http.post('/data', JSON.stringify(data)).then(
+      $http.put('/api/'+collection, JSON.stringify(data)).then(
         function (response) {
           console.log("successful post");
           getCollections();
@@ -407,8 +483,12 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   function makePlaylist(collection) {
     $scope.iframeList = [];
     var firstVideo;
-    for (var i = 0; i < $scope.collectionsResult[collection].length; i++) {
-      var items = $scope.collectionsResult[collection][i].uploads.items;
+
+    var collectionfiltered = $scope.collectionsResult.filter(function(obj ) {
+      return obj.title == collection;
+    });
+    for (var i = 0; i < collectionfiltered[0].items.length; i++) {
+      var items = collectionfiltered[0].items[i].uploads.items;
       for (var j = 0; j < items.length; j++) {
         if (i == 0) {
           firstVideo = items[j].snippet.resourceId.videoId;
@@ -417,7 +497,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       }
     }
     var length = $scope.iframeList.length;
-    $scope.iframeList = $sce.trustAsResourceUrl("http://www.youtube.com/v/" + firstVideo.toString() + "?version=3&loop=1&playlist=" + $scope.iframeList.toString());
+    $scope.iframeList = $sce.trustAsResourceUrl("https://www.youtube.com/v/" + firstVideo.toString() + "?version=3&loop=1&playlist=" + $scope.iframeList.toString());
 
 
   }
