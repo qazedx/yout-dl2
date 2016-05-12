@@ -1,6 +1,7 @@
 angular.module('youtApp')
   .controller('searchController', searchController)
   .controller('subscriptionsController', subscriptionsController)
+  .controller('AlertController', AlertController)
 
 function searchController($rootScope, $scope, googleService) {
   $scope.searchResults = {
@@ -22,8 +23,19 @@ function searchController($rootScope, $scope, googleService) {
   }
 
 }
+function AlertController ($scope) {
+
+};
 
 function subscriptionsController($window, $rootScope, $scope, $http, $sce, googleService) {
+  $scope.alerts=[];
+    $scope.addAlert = function() {
+      $scope.alerts.push({type: 'success',msg: 'Another alert!'});
+    };
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
   $scope.oneAtATime = true;
 
   $window.initGapi = function () {
@@ -131,45 +143,88 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
           console.log('Failed: ' + error)
         });
 
-    } else if (type == "collections") {
-      for (var i = 0; i < $scope.collectionsResult.length; i++) {
+    // } else if (type == "collections") {
+    //   var collectionfiltered = $scope.collectionsResult.filter(function(obj ) {
+    //     return obj.title == arg1;
+    //   });
+    //   for (var i = 0; i < $scope.collectionsResult.length; i++) {
+    //
+    //     if ($scope.collectionsResult[i].title == arg1){
+    //       for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
+    //
+    //         var uploadsId = "UU" + $scope.collectionsResult[i].items[ii].channelId.substring(2);
+    //
+    //         googleService.googleApiClientReady(
+    //           "PlaylistItems",
+    //           uploadsId
+    //         ).then(function (data) {
+    //
+    //             for (var i = 0; i < $scope.collectionsResult.length; i++) {
+    //               for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
+    //               if ($scope.collectionsResult[i].items[ii].channelId == data.items[0].snippet.channelId) {
+    //
+    //                 $scope.collectionsResult[i].items[ii].uploads = data;
+    //                 if ($scope.makePlaylistCollection !== undefined) {
+    //                   makePlaylist($scope.makePlaylistCollection);
+    //                   $scope.makePlaylistCollection = undefined;
+    //                 }
+    //                 return;
+    //
+    //                 }
+    //               }
+    //             }
+    //
+    //           },
+    //           function (error) {
+    //             console.log('Failed: ' + error)
+    //           });
+    //
+    //
+    //       }
+    //
+    //     }
+    //   }
+    // }
+  } else if (type == "collections") {
+    var collectionfiltered = $scope.collectionsResult.filter(function(obj ) {
+      return obj.title == arg1;
+    });
+        for (var i = 0; i < collectionfiltered[0].items.length; i++) {
 
-        if ($scope.collectionsResult[i].title == arg1){
-          for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
+          var uploadsId = "UU" + collectionfiltered[0].items[i].channelId.substring(2);
 
-            var uploadsId = "UU" + $scope.collectionsResult[i].items[ii].channelId.substring(2);
+          googleService.googleApiClientReady(
+            "PlaylistItems",
+            uploadsId
+          ).then(function (data) {
 
-            googleService.googleApiClientReady(
-              "PlaylistItems",
-              uploadsId
-            ).then(function (data) {
+ for (var i = 0; i < $scope.collectionsResult.length; i++) {
+                for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
+                if ($scope.collectionsResult[i].items[ii].channelId == data.items[0].snippet.channelId) {
 
-                for (var i = 0; i < $scope.collectionsResult.length; i++) {
-                  for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
-                  if ($scope.collectionsResult[i].items[ii].channelId == data.items[0].snippet.channelId) {
-
-                    $scope.collectionsResult[i].items[ii].uploads = data;
-                    if ($scope.makePlaylistCollection !== undefined) {
-                      makePlaylist($scope.makePlaylistCollection);
-                      $scope.makePlaylistCollection = undefined;
-                    }
-                    return;
-
-                    }
+                  $scope.collectionsResult[i].items[ii].uploads = data;
+                  if ($scope.makePlaylistCollection !== undefined) {
+                    makePlaylist($scope.makePlaylistCollection);
+                    $scope.makePlaylistCollection = undefined;
                   }
-                }
+                  return;
 
-              },
-              function (error) {
-                console.log('Failed: ' + error)
-              });
+                  }
 
+              }
+             }
 
-          }
+            },
+            function (error) {
+              console.log('Failed: ' + error)
+            });
+
 
         }
-      }
-    } else if (type == "myplaylists") {
+
+
+  }
+    else if (type == "myplaylists") {
       for (var i = 0; i < $scope.subscriptionsResult.myplaylists.items.length; i++) {
         var uploadsId = $scope.subscriptionsResult.myplaylists.items[i].id;
 
@@ -287,7 +342,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         $scope.collectionsResult = [];
         for (var i = 0; i < response.data.items.length; i++) {
           if (response.data.items[i].type == "collection") {
-            $scope.collectionsResult[i] = response.data.items[i];
+            $scope.collectionsResult.push(response.data.items[i]);
           }
         }
 
@@ -380,10 +435,12 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       $http.put('/api/' + collection, JSON.stringify(data)).then(
         function (response) {
           console.log("successful post");
+          $scope.alerts.push({type: 'success',msg: 'Successfuly added to collection'});
           getCollections();
         },
         function () {
           console.log("error post");
+          $scope.alerts.push({type: 'danger',msg: 'Could not add to collection'});
         });
     } else if (type == 'remove') {
 
@@ -426,8 +483,12 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
   function makePlaylist(collection) {
     $scope.iframeList = [];
     var firstVideo;
-    for (var i = 0; i < $scope.collectionsResult[collection].length; i++) {
-      var items = $scope.collectionsResult[collection][i].uploads.items;
+
+    var collectionfiltered = $scope.collectionsResult.filter(function(obj ) {
+      return obj.title == collection;
+    });
+    for (var i = 0; i < collectionfiltered[0].items.length; i++) {
+      var items = collectionfiltered[0].items[i].uploads.items;
       for (var j = 0; j < items.length; j++) {
         if (i == 0) {
           firstVideo = items[j].snippet.resourceId.videoId;
@@ -436,7 +497,7 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       }
     }
     var length = $scope.iframeList.length;
-    $scope.iframeList = $sce.trustAsResourceUrl("http://www.youtube.com/v/" + firstVideo.toString() + "?version=3&loop=1&playlist=" + $scope.iframeList.toString());
+    $scope.iframeList = $sce.trustAsResourceUrl("https://www.youtube.com/v/" + firstVideo.toString() + "?version=3&loop=1&playlist=" + $scope.iframeList.toString());
 
 
   }

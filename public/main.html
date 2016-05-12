@@ -6,9 +6,13 @@
   <base href='/'>
   <link rel='stylesheet' href='lib/bootstrap/dist/css/bootstrap.min.css' />
   <link rel='stylesheet' href='/style.css' />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
+  <div ng-controller="AlertController" >
+
+  </div>
   <div class='container'>
     <a class="btn btn-default pull-right" href="/oauth2/logout">logout</a><span class="clearfix"></span>
     <div>
@@ -28,6 +32,7 @@
     </div>
     <!-- subscriptions -->
     <div ng-controller="subscriptionsController">
+      <uib-alert class="alert-controller-wrapper" dismiss-on-timeout="5000" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
       <div collections></div>
       <div liveplaylist></div>
       <hr>

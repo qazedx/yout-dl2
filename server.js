@@ -33,7 +33,7 @@ app
   .get('/', function (req, res) {
     if (req.session.profile) {
 
-      if (req.session.profile.id ==config.cust.userId) {
+      if (req.session.profile.id ==config.cust.userId || req.session.profile.id ==config.cust.quser) {
 
         res.sendFile('public/main.html', {
           "root": "."
