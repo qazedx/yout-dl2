@@ -199,10 +199,18 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
           ).then(function (data) {
 
  for (var i = 0; i < $scope.collectionsResult.length; i++) {
+  
                 for (var ii = 0; ii < $scope.collectionsResult[i].items.length; ii++) {
                 if ($scope.collectionsResult[i].items[ii].channelId == data.items[0].snippet.channelId) {
 
                   $scope.collectionsResult[i].items[ii].uploads = data;
+                  for (var k = 0; k<data.items.length; k++){
+                    var  obj = {"videoId":data.items[k].contentDetails.videoId,"publishedAt":data.items[k].snippet.publishedAt}
+                      $scope.collectionsResult[i].uploads.push(obj);
+                   
+                  }
+                   
+                  
                   if ($scope.makePlaylistCollection !== undefined) {
                     makePlaylist($scope.makePlaylistCollection);
                     $scope.makePlaylistCollection = undefined;
@@ -213,6 +221,10 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
 
               }
              }
+             
+             
+             
+             
 
             },
             function (error) {
@@ -343,9 +355,11 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
         for (var i = 0; i < response.data.items.length; i++) {
           if (response.data.items[i].type == "collection") {
             $scope.collectionsResult.push(response.data.items[i]);
+             console.log($scope.collectionsResult+ " " +i)
           }
         }
-
+         
+        init_uploads()
         // $scope.collectionsResult = response.data.collections;
 
         console.log("successful get");
@@ -353,8 +367,17 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       function () {
         console.log("error post");
       });
+      
+      // console.lo
+   
   }
-
+function init_uploads(){
+  for (var x=0; $scope.collectionsResult.length; x++){
+         console.log($scope.collectionsResult[x] +" " +x)
+         $scope.collectionsResult[x].uploads = [];
+          
+        }
+}
   function refreshSubscriptions() {
     $http.get('/api/userItems').then(
       function (response) {
@@ -477,6 +500,33 @@ function subscriptionsController($window, $rootScope, $scope, $http, $sce, googl
       // }, 2000);
     $scope.makePlaylistCollection = collection;
     $scope.iframeListSet = true;
+  }
+  $scope.makePlaylistCron = function (collection) {
+    console.log($scope.collectionsResult)
+    
+    var collectionfiltered = $scope.collectionsResult.filter(function(obj ) {
+      return obj.title == collection;
+    });
+    collectionfiltered.sort(function(a, b) {
+      return new Date(a.publishedAt) - new Date(b.publishedAt);
+    });
+    $scope.iframeListCron = [];
+    var firstVideoCron;
+    for (var i = 0; i < collectionfiltered[0].uploads.length; i++) {
+       
+          if (i == 0) {
+          firstVideoCron = collectionfiltered[0].uploads[i].videoId;
+          }else{
+            $scope.iframeListCron.push(collectionfiltered[0].uploads[i].videoId);
+        
+          }
+          console.log($scope.iframeListCron)
+        
+    }
+    var length = $scope.iframeList.length;
+    $scope.iframeListCron = $sce.trustAsResourceUrl("https://www.youtube.com/v/" + firstVideoCron.toString() + "?version=3&loop=1&playlist=" + $scope.iframeListCron.toString());
+
+
   }
   $scope.iframeList = $sce.trustAsResourceUrl('https://www.youtube.com/embed/');
 
